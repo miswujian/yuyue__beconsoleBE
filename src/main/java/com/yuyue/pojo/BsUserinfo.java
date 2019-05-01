@@ -115,10 +115,14 @@ public class BsUserinfo implements Serializable {
 	//bi-directional many-to-one association to BsUserdynamiccmnt
 	@OneToMany(mappedBy="bsUserinfo")
 	private List<BsUserdynamiccmnt> bsUserdynamiccmnts;
+	
+	@OneToMany(mappedBy="bsUserinfo")
+	@JsonBackReference("bsFamilyinfos")
+	private List<BsFamilyinfo> bsFamilyinfos;
 
 	//bi-directional many-to-one association to BsFamilyinfo
 	@ManyToOne
-	@JsonBackReference
+	//@JsonBackReference("bsFamilyinfo")
 	@JoinColumn(name="family_id")
 	private BsFamilyinfo bsFamilyinfo;
 
@@ -127,6 +131,18 @@ public class BsUserinfo implements Serializable {
 	private List<RsUserdynamiclike> rsUserdynamiclikes;
 
 	public BsUserinfo() {
+	}
+
+	public List<BsFamilyinfo> getBsFamilyinfos() {
+		return bsFamilyinfos;
+	}
+
+	public void setBsFamilyinfos(List<BsFamilyinfo> bsFamilyinfos) {
+		this.bsFamilyinfos = bsFamilyinfos;
+	}
+
+	public void setGrowValue(Integer growValue) {
+		this.growValue = growValue;
 	}
 
 	public Integer getUserId() {

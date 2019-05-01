@@ -36,13 +36,23 @@ public class BsPublishinfoService {
 	}
 	
 	public int addPublishinfo(BsPublishinfo bpi) {
-		BsPublishinfo bp = bsPublishinfoDAO.save(bpi);
-		return bp.getPubId();
+		try {
+			BsPublishinfo bp = bsPublishinfoDAO.save(bpi);
+			return bp.getPubId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int updatePublishinfo(BsPublishinfo bpi) {
-		BsPublishinfo bp = bsPublishinfoDAO.save(bpi);
-		return bp.getPubId();
+		try {
+			BsPublishinfo bp = bsPublishinfoDAO.save(bpi);
+			return bp.getPubId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int deletePublishinfo(int pubId) {

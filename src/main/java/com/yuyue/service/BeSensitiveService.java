@@ -20,24 +20,38 @@ public class BeSensitiveService {
 	
 	public int addSensitives(List<BeSensitive> words) {
 		int i = 0;
-		for(BeSensitive word : words) {
-			int id = addSensitive(word);
-			if(id > 0)
-				i++;
+		try {
+			for(BeSensitive word : words) {
+				int id = addSensitive(word);
+				if(id > 0)
+					i++;
+			}
+			return i;
+		} catch (Exception e) {
+			return 0;
 		}
-		return i;	
 	}
 	
 	public int addSensitive(BeSensitive word) {
-		BeSensitive bs = beSensitiveDAO.save(word);
-		return bs.getId();
+		try {
+			BeSensitive bs = beSensitiveDAO.save(word);
+			return bs.getId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int addSensitive(String word) {
-		BeSensitive bs = new BeSensitive();
-		bs.setWord(word);
-		bs = beSensitiveDAO.save(bs);
-		return bs.getId();
+		try {
+			BeSensitive bs = new BeSensitive();
+			bs.setWord(word);
+			bs = beSensitiveDAO.save(bs);
+			return bs.getId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int deleteSensitive(int id) {

@@ -36,7 +36,7 @@ public class BePermission implements Serializable {
 
 	//bi-directional many-to-one association to RsRolepermission
 	@OneToMany(mappedBy="bePermission")
-	@JsonBackReference
+	@JsonBackReference("rsRolepermissions")
 	private List<RsRolepermission> rsRolepermissions;
 
 	public BePermission() {

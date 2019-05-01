@@ -57,12 +57,13 @@ public class BsFamilyinfo implements Serializable {
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference("bsUserinfo")
 	@JoinColumn(name="master_id")
 	private BsUserinfo bsUserinfo;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@OneToMany(mappedBy="bsFamilyinfo")
+	@JsonBackReference("bsUserinfos")
 	private List<BsUserinfo> bsUserinfos;
 
 	public BsFamilyinfo() {

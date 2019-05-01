@@ -32,7 +32,7 @@ public class Application {
 	 * @RequestBady IO错误
 	 * @return
 	 */
-	@Bean
+	/*@Bean
 	public FilterRegistrationBean httpServletRequestReplacedRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 		registration.setFilter(new HttpServletRequestReplacedFilter());
@@ -41,7 +41,7 @@ public class Application {
 		registration.setName("httpServletRequestReplacedFilter");
 		registration.setOrder(1);
 		return registration;
-	}
+	}*/
 	
 	@PostConstruct
 	public void init() {

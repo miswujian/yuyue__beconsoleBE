@@ -36,13 +36,13 @@ public class BsUserdynamiccmnt implements Serializable {
 
 	//bi-directional many-to-one association to BsUserdynamic
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference("bsUserdynamic")
 	@JoinColumn(name="dynamic_id")
 	private BsUserdynamic bsUserdynamic;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference("bsUserinfo")
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
 	

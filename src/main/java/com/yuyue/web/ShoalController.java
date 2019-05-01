@@ -53,11 +53,11 @@ public class ShoalController {
 	 * 用户信息集合
 	 * @return
 	 */
-	@GetMapping("/userinfos")
+	/*@GetMapping("/userinfos")
 	@ApiIgnore
 	public List<BsUserinfo> listUser(){
 		return bsUserinfoService.list();
-	}
+	}*/
 	
 	/**
 	 * 鱼群动态表 书籍

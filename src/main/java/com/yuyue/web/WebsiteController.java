@@ -40,9 +40,10 @@ import com.yuyue.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * banner管理和广告管理没做 网站管理
+ * 网站管理 广告管理还差测试
  * 
  * @author 吴俭
  *
@@ -51,8 +52,8 @@ import io.swagger.annotations.ApiParam;
 @Api(value="网站管理接口", tags="网站管理接口")
 public class WebsiteController {
 
-	//private String path = "119.3.231.11:8080/yuyue/img/";
 	private String path = "119.3.231.11:8080/yuyue/img/";
+	//private String path = "localhost:8080/yuyue/img/";
 	@Autowired
 	private BsBooksubjectService bsBooksubjectService;
 
@@ -269,16 +270,15 @@ public class WebsiteController {
 	 */
 	@PostMapping("/pictures")
 	@ApiOperation(value="添加banner", notes="添加banner")
-	public Object addPicture(/*@ApiParam(name="image",required=false)MultipartFile image,*/ 
-			@RequestBody BsPicture bsPicture) throws IOException {
-		//System.err.println(image.getName());
-		//saveOrUpdateOrDeleteImageFile(image, bsPicture, 1);
+	public Object addPicture(@ApiParam(name="image",required=false)MultipartFile image, 
+			BsPicture bsPicture) throws IOException {
+		saveOrUpdateOrDeleteImageFile(image, bsPicture, 1);
 		int flag = bsPictureService.add(bsPicture);
 		if (flag <= 0)
 			return Result.fail("增加失败");
 		return Result.success();
 	}
-
+	
 	/**
 	 * 删除banner
 	 * @param picId
@@ -305,7 +305,7 @@ public class WebsiteController {
 	 */
 	@PutMapping("/pictures")
 	@ApiOperation(value="更新banner", notes="更新banner")
-	public Object updatePicture(@RequestBody BsPicture bsPicture, 
+	public Object updatePicture(BsPicture bsPicture, 
 			@ApiParam(name="image",required=false)MultipartFile image) throws IOException {
 		saveOrUpdateOrDeleteImageFile(image, bsPicture, 2);
 		int flag = bsPictureService.add(bsPicture);
@@ -314,7 +314,12 @@ public class WebsiteController {
 		return Result.success();
 	}
 	
-	@GetMapping("/cpictures/{picId}")
+	/**
+	 * 更换banner状态
+	 * @param picId
+	 * @return
+	 */
+	@PostMapping("/pictures/{picId}")
 	@ApiOperation(value = "更换banner状态", notes="更换banner状态")
 	public Object changeStatus(@PathVariable("picId") int picId) {
 		int flag = bsPictureService.changeStatus(picId);
@@ -331,7 +336,6 @@ public class WebsiteController {
 	 */
 	public void saveOrUpdateOrDeleteImageFile(MultipartFile image, BsPicture bsPicture, int size) throws IOException {
 		if (size == 1) {
-			System.err.println("??");
 			String fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
 			File file = new File(fileUploadProperteis.getUploadFolder() +"/picture/"+ fileName);
 			System.err.println(file.getAbsolutePath());
@@ -373,6 +377,60 @@ public class WebsiteController {
 
 	}
 	
+	/**
+	 * @param image
+	 * @param beAdvertisement
+	 * @param size 1-增加 2-更新 3-删除
+	 * @throws IOException
+	 */
+	public void saveOrUpdateOrDeleteImageFile2(MultipartFile image, BeAdvertisement beAdvertisement, int size) throws IOException {
+		if (size == 1) {
+			String fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
+			File file = new File(fileUploadProperteis.getUploadFolder() +"/adv/"+ fileName);
+			System.err.println(file.getAbsolutePath());
+			if (!file.getParentFile().exists())
+				file.getParentFile().mkdirs();
+
+			if (image != null) {
+				image.transferTo(file);
+				BufferedImage img = ImageUtil.change2jpg(file);
+				ImageIO.write(img, "jpg", file);
+				beAdvertisement.setAdvUrl((path + "adv/" + fileName));
+			} else
+				beAdvertisement.setAdvUrl("暂无图片");
+
+		} else if (size == 2) {
+			String fileName = beAdvertisement.getAdvUrl();
+			if (!fileName.equals("暂无图片")) {
+				File file = new File(fileName.split(path)[1]);
+				file.delete();
+			}
+			fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
+			File file = new File("adv/" + fileName);
+			if (!file.getParentFile().exists())
+				file.getParentFile().mkdirs();
+			if (image != null) {
+				image.transferTo(file);
+				BufferedImage img = ImageUtil.change2jpg(file);
+				ImageIO.write(img, "jpg", file);
+				beAdvertisement.setAdvUrl(path + "adv/" + fileName);
+			} else
+				beAdvertisement.setAdvUrl("暂无图片");
+		} else if (size == 3) {
+			String fileName = beAdvertisement.getAdvUrl();
+			if (!fileName.equals("暂无图片")) {
+				File file = new File(fileName.split(path)[1]);
+				file.delete();
+			}
+		}
+
+	}
+	
+	/**
+	 * 获取广告信息
+	 * @param advId
+	 * @return
+	 */
 	@GetMapping("/advertisements/{advId}")
 	@ApiOperation(value="获取广告信息", notes="通过advId获取广告信息")
 	public Object getAdvertisement(@PathVariable("advId")int advId) {
@@ -384,6 +442,14 @@ public class WebsiteController {
 		return ba;
 	}
 	
+	/**
+	 * 广告查询
+	 * @param start
+	 * @param size
+	 * @param caseId
+	 * @param keyword
+	 * @return
+	 */
 	@GetMapping("/advertisements")
 	@ApiOperation(value = "广告查询", notes="广告查询")
 	public Object listAdvertisement(
@@ -395,35 +461,63 @@ public class WebsiteController {
 		return beAdvertisementService.list(start, size, 5, caseId, keyword);
 	}
 	
+	/**
+	 * 增加广告
+	 * @param image
+	 * @param beAdvertisement
+	 * @return
+	 * @throws IOException
+	 */
 	@PostMapping("/advertisements")
-	@ApiOperation(value="增加广告", notes="增加广告")
-	public Object addAdvertisement(@RequestBody BeAdvertisement beAdvertisement) {
+	//@ApiOperation(value="增加广告", notes="增加广告")
+	@ApiIgnore
+	public Object addAdvertisement(MultipartFile image, 
+			 BeAdvertisement beAdvertisement) throws IOException {
 		if(beAdvertisement == null)
 			return Result.fail("未获取到输入值");
 		if(beAdvertisement.getAdvId() <= 0)
 			return Result.fail("请输入正确的advId");
+		saveOrUpdateOrDeleteImageFile2(image, beAdvertisement, 1);
 		int flag = beAdvertisementService.add(beAdvertisement);
 		if(flag<=0)
 			return Result.fail("增加广告失败");
 		return Result.success();
 	}
 	
+	/**
+	 * 更新广告
+	 * @param image
+	 * @param beAdvertisement
+	 * @return
+	 * @throws IOException
+	 */
 	@PutMapping("/advertisements")
-	@ApiOperation(value = "更新广告", notes="更新广告")
-	public Object updateAdvertisement(@RequestBody BeAdvertisement beAdvertisement) {
+	//@ApiOperation(value = "更新广告", notes="更新广告")
+	@ApiIgnore
+	public Object updateAdvertisement(MultipartFile image, 
+			BeAdvertisement beAdvertisement) throws IOException {
 		if(beAdvertisement == null)
 			return Result.fail("未获取到输入值");
+		saveOrUpdateOrDeleteImageFile2(image, beAdvertisement, 2);
 		int flag = beAdvertisementService.update(beAdvertisement);
 		if(flag<=0)
 			return Result.fail("更新广告失败");
 		return Result.success();
 	}
 	
-	@DeleteMapping("/advertisements")
+	/**
+	 * 删除广告
+	 * @param advId
+	 * @return
+	 * @throws IOException
+	 */
+	@DeleteMapping("/advertisements/{advId}")
 	@ApiOperation(value = "删除广告", notes = "删除广告")
-	public Object deleteAdvertisement(int advId) {
+	public Object deleteAdvertisement(@PathVariable("advId")int advId) throws IOException {
 		if(advId<=0)
 			return Result.fail("请输入正确的advId");
+		BeAdvertisement beAdvertisement = beAdvertisementService.get(advId);
+		saveOrUpdateOrDeleteImageFile2(null, beAdvertisement, 3);
 		int flag = beAdvertisementService.delete(advId);
 		if(flag <= 0)
 			return Result.fail("删除失败");

@@ -46,7 +46,7 @@ public class BsVipplan implements Serializable {
 
 	//bi-directional many-to-one association to RsVipplanorder
 	@OneToMany(mappedBy="bsVipplan")
-	@JsonBackReference
+	@JsonBackReference("rsVipplanorders")
 	private List<RsVipplanorder> rsVipplanorders;
 
 	public BsVipplan() {

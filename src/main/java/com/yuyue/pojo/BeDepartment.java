@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
 import java.util.List;
 
 
@@ -31,11 +32,23 @@ public class BeDepartment implements Serializable {
 
 	private String name;
 
-	@JsonBackReference
-	@Transient
+	@JsonBackReference("beUsers")
+	@OneToMany(mappedBy="beDepartment")
 	private List<BeUser> beUsers;
+	
+	@JsonBackReference("beWarehouses")
+	@OneToMany(mappedBy="beDepartment")
+	private List<BeWarehouse> beWarehouses;
 
 	public BeDepartment() {
+	}
+
+	public List<BeWarehouse> getBeWarehouses() {
+		return beWarehouses;
+	}
+
+	public void setBeWarehouses(List<BeWarehouse> beWarehouses) {
+		this.beWarehouses = beWarehouses;
 	}
 
 	public Integer getId() {

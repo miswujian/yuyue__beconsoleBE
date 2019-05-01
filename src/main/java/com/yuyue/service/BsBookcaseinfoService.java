@@ -34,13 +34,23 @@ public class BsBookcaseinfoService {
 	}
 	
 	public int addBookcaseinfo(BsBookcaseinfo bbc) {
-		BsBookcaseinfo bb = bsBookcaseinfoDAO.save(bbc);
-		return bb.getCaseId();
+		try {
+			BsBookcaseinfo bb = bsBookcaseinfoDAO.save(bbc);
+			return bb.getCaseId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int updateBookcaseinfo(BsBookcaseinfo bbc) {
-		BsBookcaseinfo bb = bsBookcaseinfoDAO.save(bbc);
-		return bb.getCaseId();
+		try {
+			BsBookcaseinfo bb = bsBookcaseinfoDAO.save(bbc);
+			return bb.getCaseId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public BsBookcaseinfo getBookcaseinfo(int caseId) {

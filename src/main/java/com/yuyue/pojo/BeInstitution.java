@@ -35,7 +35,7 @@ public class BeInstitution implements Serializable {
 
 	//bi-directional many-to-one association to BeInstitution
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference("beInstitution")
 	@JoinColumn(name="parentid")
 	private BeInstitution beInstitution;
 	

@@ -36,8 +36,13 @@ public class BsPictureService {
 	}
 	
 	public int update(BsPicture bsPicture) {
-		BsPicture bp = bsPictureDAO.save(bsPicture);
-		return bp.getPicId();
+		try {
+			BsPicture bp = bsPictureDAO.save(bsPicture);
+			return bp.getPicId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int delete(int picId) {
@@ -50,8 +55,13 @@ public class BsPictureService {
 	}
 	
 	public int add(BsPicture bsPicture) {
-		BsPicture bp = bsPictureDAO.save(bsPicture);
-		return bp.getPicId();
+		try {
+			BsPicture bp = bsPictureDAO.save(bsPicture);
+			return bp.getPicId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int changeStatus(Integer picId) {

@@ -29,8 +29,13 @@ public class RsBookinsubjectService{
 	}
 	
 	public int addBookinsubject(RsBookinsubject rsBookinsubject) {
-		RsBookinsubject rbs = rsBookinsubjectDAO.save(rsBookinsubject);
-		return rbs.getBookinsubjectId();
+		try {
+			RsBookinsubject rbs = rsBookinsubjectDAO.save(rsBookinsubject);
+			return rbs.getBookinsubjectId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 }

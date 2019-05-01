@@ -79,6 +79,8 @@ public class RsHisborrowrecord implements Serializable {
 
 	@Column(name="return_way")
 	private Byte returnWay;
+	
+	private Byte status;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="start_time")
@@ -98,8 +100,49 @@ public class RsHisborrowrecord implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="bookinfo_id")
 	private BsBookinfo bsBookinfo;
+	
+	@Transient
+	private String bookName;
+	
+	@Transient
+	private String nikeName;
+	
+	@Transient
+	private String vipNo;
 
 	public RsHisborrowrecord() {
+	}
+
+	public String getNikeName() {
+		return nikeName;
+	}
+
+	public void setNikeName(String nikeName) {
+		this.nikeName = nikeName;
+	}
+
+	public String getVipNo() {
+		return vipNo;
+	}
+
+	public void setVipNo(String vipNo) {
+		this.vipNo = vipNo;
+	}
+
+	public Byte getStatus() {
+		return status;
+	}
+
+	public void setStatus(Byte status) {
+		this.status = status;
+	}
+
+	public String getBookName() {
+		return bookName;
+	}
+
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
 	}
 
 	public Integer getBorrowId() {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.yuyue.dao.BsBookcellinfoDAO;
 import com.yuyue.pojo.BsBookcellinfo;
 import com.yuyue.pojo.BsBookinstore;
+import com.yuyue.pojo.RsCurborrowrecord;
 import com.yuyue.pojo.RsHisborrowrecord;
 
 @Service
@@ -28,13 +29,23 @@ public class BsBookcellinfoService {
 	}
 	
 	public int addBookcellinfo(BsBookcellinfo bbc) {
-		BsBookcellinfo bb = bsBookcellinfoDAO.save(bbc);
-		return bb.getCellId();
+		try {
+			BsBookcellinfo bb = bsBookcellinfoDAO.save(bbc);
+			return bb.getCellId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int updateBookcellinfo(BsBookcellinfo bbc) {
-		BsBookcellinfo bb = bsBookcellinfoDAO.save(bbc);
-		return bb.getCellId();
+		try {
+			BsBookcellinfo bb = bsBookcellinfoDAO.save(bbc);
+			return bb.getCellId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public void setBookcellinfo(BsBookinstore bbs) {
@@ -47,6 +58,10 @@ public class BsBookcellinfoService {
 	}
 	
 	public void setBookcellinfoNull(RsHisborrowrecord rhb) {
+		rhb.getBsBookinstore().setBsBookcellinfo(null);
+	}
+	
+	public void setBookcellinfoNull(RsCurborrowrecord rhb) {
 		rhb.getBsBookinstore().setBsBookcellinfo(null);
 	}
 	

@@ -88,8 +88,41 @@ public class RsCurborrowrecord implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="bookinfo_id")
 	private BsBookinfo bsBookinfo;
+	
+	@Transient
+	private String bookName;
+	
+	@Transient
+	private String nikeName;
+	
+	@Transient
+	private String vipNo;
 
 	public RsCurborrowrecord() {
+	}
+
+	public String getNikeName() {
+		return nikeName;
+	}
+
+	public void setNikeName(String nikeName) {
+		this.nikeName = nikeName;
+	}
+
+	public String getVipNo() {
+		return vipNo;
+	}
+
+	public void setVipNo(String vipNo) {
+		this.vipNo = vipNo;
+	}
+
+	public String getBookName() {
+		return bookName;
+	}
+
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
 	}
 
 	public Integer getBorrowId() {

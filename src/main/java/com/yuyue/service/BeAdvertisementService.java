@@ -30,13 +30,23 @@ public class BeAdvertisementService {
 	}
 	
 	public int add(BeAdvertisement beAdvertisement) {
-		BeAdvertisement ba = beAdvertisementDAO.save(beAdvertisement);
-		return ba.getAdvId();
+		try {
+			BeAdvertisement ba = beAdvertisementDAO.save(beAdvertisement);
+			return ba.getAdvId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int update(BeAdvertisement beAdvertisement) {
-		BeAdvertisement ba = beAdvertisementDAO.save(beAdvertisement);
-		return ba.getAdvId();
+		try {
+			BeAdvertisement ba = beAdvertisementDAO.save(beAdvertisement);
+			return ba.getAdvId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int delete(int advId) {

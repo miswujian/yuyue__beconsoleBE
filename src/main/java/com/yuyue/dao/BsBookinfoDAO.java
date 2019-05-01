@@ -17,4 +17,8 @@ public interface BsBookinfoDAO extends JpaRepository<BsBookinfo, Integer> {
 	
 	public List<BsBookinfo> findByBsBookcategoryAndBookNameLike(BsBookcategory bsBookcategory, String bookName);
 	
+	public List<BsBookinfo> findByBookNameLike(String bookName);
+	
+	public List<BsBookinfo> findByIsbn(String isbn);
+	
 }

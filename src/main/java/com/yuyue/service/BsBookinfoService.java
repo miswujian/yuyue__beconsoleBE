@@ -55,6 +55,33 @@ public class BsBookinfoService {
 		return bs;
 	}
 	
+	/**
+	 * 
+	 * @param bookName
+	 * @return
+	 */
+	public List<String> getIsbnsByBookName(String bookName){
+		List<BsBookinfo> bbs = bsBookinfoDAO.findByBookNameLike("%"+bookName+"%");
+		if(bbs.isEmpty())
+			return null;
+		List<String> isbns = new ArrayList<>();
+		for(BsBookinfo bb : bbs)
+			isbns.add(bb.getIsbn());
+		return isbns;
+	}
+	
+	/**
+	 * 通过isbn找到书籍的名字
+	 * @param isbn
+	 * @return
+	 */
+	public String getBookNameByIsbn(String isbn) {
+		List<BsBookinfo> bbs = bsBookinfoDAO.findByIsbn(isbn);
+		if(bbs == null||bbs.isEmpty())
+			return null;
+		return bbs.get(0).getBookName();
+	}
+	
 	public int deletebook(int id) {
 		try {
 			bsBookinfoDAO.delete(id);
@@ -66,7 +93,8 @@ public class BsBookinfoService {
 	}
 	
 	public void setCategoryName(BsBookinfo bbi) {
-		bbi.setCategoryName(bbi.getBsBookcategory().getCategoryName());
+		if(bbi.getBsBookcategory()!=null)
+			bbi.setCategoryName(bbi.getBsBookcategory().getCategoryName());
 	}
 	
 	public void setCategoryName(List<BsBookinfo> bbis) {
@@ -93,8 +121,13 @@ public class BsBookinfoService {
 	}
 	
 	public int addbook(BsBookinfo bsBookinfo) {
-		BsBookinfo bb = bsBookinfoDAO.save(bsBookinfo);
-		return bb.getBookinfoId();
+		try {
+			BsBookinfo bb = bsBookinfoDAO.save(bsBookinfo);
+			return bb.getBookinfoId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public BsBookinfo getBook(int bookinfoId) {
@@ -102,28 +135,13 @@ public class BsBookinfoService {
 	}
 	
 	public int updateBook(BsBookinfo bsBookinfo) {
-		BsBookinfo bb = bsBookinfoDAO.save(bsBookinfo);
-		return bb.getBookinfoId();
-	}
-	
-	public void setBookinfoNull(RsCurborrowrecord rsCurborrowrecord) {
-		rsCurborrowrecord.getBsBookinstore().setBsBookinfo(null);
-	}
-	
-	public void setBookinfoNull(List<RsCurborrowrecord> rcbs) {
-		for(RsCurborrowrecord rcb : rcbs) {
-			setBookinfoNull(rcb);
+		try {
+			BsBookinfo bb = bsBookinfoDAO.save(bsBookinfo);
+			return bb.getBookinfoId();
+		} catch (Exception e) {
+			return 0;
 		}
-	}
-	
-	public void setHBookinfoNull(RsHisborrowrecord rsHisborrowrecord) {
-		rsHisborrowrecord.getBsBookinstore().setBsBookinfo(null);
-	}
-	
-	public void setHBookinfoNull(List<RsHisborrowrecord> rhbs) {
-		for(RsHisborrowrecord rhb : rhbs) {
-			setHBookinfoNull(rhb);
-		}
+		
 	}
 	
 }

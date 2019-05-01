@@ -60,8 +60,41 @@ public class RsCurdonaterecord implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
+	
+	@Transient
+	private String bookName;
+	
+	@Transient
+	private String nikeName;
+	
+	@Transient
+	private String vipNo;
 
 	public RsCurdonaterecord() {
+	}
+
+	public String getBookName() {
+		return bookName;
+	}
+
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
+
+	public String getNikeName() {
+		return nikeName;
+	}
+
+	public void setNikeName(String nikeName) {
+		this.nikeName = nikeName;
+	}
+
+	public String getVipNo() {
+		return vipNo;
+	}
+
+	public void setVipNo(String vipNo) {
+		this.vipNo = vipNo;
 	}
 
 	public Integer getDonateId() {

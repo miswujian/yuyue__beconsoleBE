@@ -12,6 +12,7 @@ import com.yuyue.pojo.RsVipplanorder;
 import com.yuyue.service.BsInvitecodeService;
 import com.yuyue.service.BsIvtuserinfoService;
 import com.yuyue.service.BsUserdynamicService;
+import com.yuyue.service.BsUserinfoService;
 import com.yuyue.service.RsUsercreditService;
 import com.yuyue.service.RsVipplanorderService;
 import com.yuyue.util.Page4Navigator;
@@ -44,6 +45,15 @@ public class VipController {
 	
 	@Autowired
 	private BsUserdynamicService bsUserdynamicService;
+	
+	@Autowired
+	private BsUserinfoService bsUserinfoService;
+	
+	@GetMapping("userinfos")
+	@ApiOperation(value="会员信息", notes="会员信息")
+	public Object listUserinfo() {
+		return bsUserinfoService.list();
+	}
 	
 	/**
 	 * 支付订单

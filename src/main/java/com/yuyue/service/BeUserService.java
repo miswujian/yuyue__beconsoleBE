@@ -78,7 +78,7 @@ public class BeUserService {
 	}
 	
 	public void setRole(BeUser bu) {
-		bu.setRole(beRoleService.getById(bu.getBeRole().getId()).getName());
+		bu.setRole(bu.getBeRole().getName());
 		bu.setRoleType(bu.getBeRole().getId());
 	}
 	

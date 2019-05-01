@@ -35,14 +35,25 @@ public class BsBookinstoreService {
 		return new Page4Navigator<>(pageFromJPA, navigatePages);
 	}
 	
-	public BigInteger addBookinstore(BsBookinstore bbs) {
-		BsBookinstore bb = bsBookinstoreDAO.save(bbs);
-		return bb.getBookId();
+	public int addBookinstore(BsBookinstore bbs) {
+		try {
+			BsBookinstore bb = bsBookinstoreDAO.save(bbs);
+			return bb.getBookId().intValue();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
-	public BigInteger updateBookinstore(BsBookinstore bbs) {
-		BsBookinstore bb = bsBookinstoreDAO.save(bbs);
-		return bb.getBookId();
+	public int updateBookinstore(BsBookinstore bbs) {
+		BigInteger bi = new BigInteger("0");
+		try {
+			BsBookinstore bb = bsBookinstoreDAO.save(bbs);
+			return bb.getBookId().intValue();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public BsBookinstore getBookinstore(int bookId) {

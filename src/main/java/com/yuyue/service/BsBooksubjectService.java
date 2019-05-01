@@ -25,13 +25,22 @@ public class BsBooksubjectService {
 	}
 	
 	public int addSubject(BsBooksubject bsBooksubject) {
-		BsBooksubject bs = bsBooksubjectDAO.save(bsBooksubject);
-		return bs.getBooksubjectId();
+		try {
+			BsBooksubject bs = bsBooksubjectDAO.save(bsBooksubject);
+			return bs.getBooksubjectId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int updateSubject(BsBooksubject bsBooksubject) {
-		BsBooksubject bs = bsBooksubjectDAO.save(bsBooksubject);
-		return bs.getBooksubjectId();
+		try {
+			BsBooksubject bs = bsBooksubjectDAO.save(bsBooksubject);
+			return bs.getBooksubjectId();
+		} catch (Exception e) {
+			return 0;
+		}
 		
 	}
 	

@@ -34,7 +34,7 @@ public class RsRolepermission implements Serializable {
 
 	//bi-directional many-to-one association to BeRole
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference("beRole")
 	@JoinColumn(name="rid")
 	private BeRole beRole;
 	

@@ -36,7 +36,7 @@ public class BeRole implements Serializable {
 
 	//bi-directional many-to-one association to BeUser
 	@OneToMany(mappedBy="beRole")
-	@JsonBackReference
+	@JsonBackReference("beUsers")
 	private List<BeUser> beUsers;
 	
 	@Transient

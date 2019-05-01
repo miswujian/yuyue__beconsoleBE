@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,14 +110,14 @@ public class OverallController {
 		String password = Md5Util.md5(beUser.getPassword());
 		BeUser bu = beUserService.login(name, password);
 		if (bu != null) {
-			session.setAttribute("user", bu);
+			//session.setAttribute("user", bu);
 			BeUser user = new BeUser();
 			user = bu;
 			user.setPassword(null);
 			User u = userTransform(user);
 			JSONObject json = JSONObject.fromObject(u);
 			System.err.println(json.toString());
-			stringRedisTemplate.opsForValue().set(session.getId().toString(), json.toString());
+			stringRedisTemplate.opsForValue().set(session.getId().toString(), json.toString(),5,TimeUnit.HOURS);
 			System.err.println(session.getId().toString()+" : "+json.toString());
 			return LoginResult.success(user,session.getId());
 		}
@@ -124,6 +125,16 @@ public class OverallController {
 		return Result.fail(message);
 	}
 
+	@PostMapping(value="loyout")
+	@ApiOperation(value="注销", notes="注销")
+	public Object loyout(HttpSession session) {
+		String u = stringRedisTemplate.opsForValue().get(session.getId().toString());
+		if(u==null)
+			return Result.fail("登录状态不存在");
+		stringRedisTemplate.delete(session.getId().toString());
+		return Result.success();
+	}
+	
 	/**
 	 * 获得登录角色的权限
 	 * @param session

@@ -44,7 +44,7 @@ public class BsIvtuserinfo implements Serializable {
 
 	//bi-directional many-to-one association to BsInvitecode
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference("bsInvitecode")
 	@JoinColumn(name="ivtcode_id")
 	private BsInvitecode bsInvitecode;
 

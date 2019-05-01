@@ -45,13 +45,23 @@ public class BeWarehouseService {
 	}
 	
 	public int addWarehouse(BeWarehouse beWarehouse) {
-		BeWarehouse bw = beWarehouseDAO.save(beWarehouse);
-		return bw.getWarehouseId();
+		try {
+			BeWarehouse bw = beWarehouseDAO.save(beWarehouse);
+			return bw.getWarehouseId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int updateWarehouse(BeWarehouse beWarehouse) {
-		BeWarehouse bw = beWarehouseDAO.save(beWarehouse);
-		return bw.getWarehouseId();
+		try {
+			BeWarehouse bw = beWarehouseDAO.save(beWarehouse);
+			return bw.getWarehouseId();
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 	
 	public int deleteWarehouse(int warehouseId) {
