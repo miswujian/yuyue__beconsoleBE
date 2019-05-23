@@ -45,8 +45,19 @@ public class BeAdvertisement implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="case_id")
 	private BsBookcaseinfo bsBookcaseinfo;
+	
+	@Transient
+	private Integer caseId;
 
 	public BeAdvertisement() {
+	}
+
+	public Integer getCaseId() {
+		return caseId;
+	}
+
+	public void setCaseId(Integer caseId) {
+		this.caseId = caseId;
 	}
 
 	public Integer getAdvId() {

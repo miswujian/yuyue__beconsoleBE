@@ -1,11 +1,14 @@
 package com.yuyue.web;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,8 +16,6 @@ import com.yuyue.pojo.RsCurborrowrecord;
 import com.yuyue.pojo.RsCurdonaterecord;
 import com.yuyue.pojo.RsHisborrowrecord;
 import com.yuyue.service.BsBookcellinfoService;
-import com.yuyue.service.BsBookinfoService;
-import com.yuyue.service.BsUserdynamicService;
 import com.yuyue.service.RsCurborrowrecordService;
 import com.yuyue.service.RsCurdonaterecordService;
 import com.yuyue.service.RsHisborrowrecordService;
@@ -32,6 +33,7 @@ import io.swagger.annotations.ApiParam;
  *
  */
 @RestController
+@RequestMapping("/order")
 @Api(value="订单管理接口",tags={"订单管理接口"})
 public class OrderController {
 
@@ -43,9 +45,6 @@ public class OrderController {
 	
 	@Autowired
 	private RsHisborrowrecordService rsHisborrowrecordService;
-	
-	@Autowired
-	private BsUserdynamicService bsUserdynamicService;
 	
 	@Autowired
 	private BsBookcellinfoService bsBookcellinfoService;
@@ -74,6 +73,26 @@ public class OrderController {
 		rsCurborrowrecordService.setBookinstoreBookNull(rcbs.getContent());
 		rsCurborrowrecordService.setUserinfoNull(rcbs.getContent());
 		return rcbs;
+	}
+	
+	@GetMapping("/borrowrecords/{orderNo}")
+	@ApiOperation(value="借阅订单详情",notes="借阅订单详情")
+	public Object getBorrowrecord(@PathVariable(name = "orderNo")String orderNo) {
+		Map<String, Object> map = new HashMap<>();
+		RsCurborrowrecord rcb = rsCurborrowrecordService.getByOrderNo(orderNo);
+		if(rcb!=null) {
+			rsCurborrowrecordService.setUserfine(rcb);
+			rsCurborrowrecordService.setBookinstoreBookNull(rcb);
+			rsCurborrowrecordService.setUserinfoNull(rcb);
+		}
+		RsHisborrowrecord rhb = rsHisborrowrecordService.getByOrderNo(orderNo);
+		if(rhb!=null) {
+			rsHisborrowrecordService.setUserinfoNull(rhb);
+			rsHisborrowrecordService.setBookinstoreBookNull(rhb);
+		}
+		map.put("curborrowrecord", rcb);
+		map.put("hisborrowrecord", rhb);
+		return map;
 	}
 	
 	/**
@@ -144,6 +163,17 @@ public class OrderController {
 		return rcds;
 	}
 	
+	@GetMapping("donaterecords/{orderNo}")
+	@ApiOperation(value="捐书订单详情",notes="捐书订单详情")
+	public Object getDonaterecord(@PathVariable(name = "orderNo")String orderNo) {
+		RsCurdonaterecord rcd = rsCurdonatercordService.getByOrder(orderNo);
+		if(rcd!=null) {
+			rsCurdonatercordService.setUserinfoNull(rcd);
+			rsCurdonatercordService.setBookName(rcd);
+		}
+		return rcd;
+	}
+	
 	/**
 	 * 历史借阅集合
 	 * @param start
@@ -163,7 +193,8 @@ public class OrderController {
 			@ApiParam(name="keyword1",required=false)@RequestParam(value = "keyword1",defaultValue="")String keyword1, 
 			@ApiParam(name="keyword2",required=false)@RequestParam(value = "keyword2",defaultValue="")String keyword2){
 		start = start<0?0:start;
-		Page4Navigator<RsHisborrowrecord> rhbs = rsHisborrowrecordService.list(start, size, 5);
+		Page4Navigator<RsHisborrowrecord> rhbs = rsHisborrowrecordService.list
+				(start, size, 5, stage, starttime, endtime, deliverType, returnWay, keyword1, keyword2);;
 		//rsHisborrowrecordService.setBookinfoNull(rhbs.getContent());
 		rsHisborrowrecordService.setUserinfoNull(rhbs.getContent());
 		rsHisborrowrecordService.setBookinstoreBookNull(rhbs.getContent());

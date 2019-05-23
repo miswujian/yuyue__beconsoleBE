@@ -85,14 +85,6 @@ public class OverallController {
 		map.put("repair", repair);
 		return Result.success(map);
 	}
-
-	/*@RequestMapping(value="login", method=RequestMethod.OPTIONS)
-	public void loginOptions(HttpServletResponse response) {
-		System.out.println("option execute.....");
-		response.setHeader("Access-Control-Allow-Headers", "accept, content-type");
-		response.setHeader("Access-Control-Allow-Method", "POST");
-		response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1");
-	}*/
 	
 	/**
 	 * 登录
@@ -100,7 +92,7 @@ public class OverallController {
 	 * @param session
 	 * @return
 	 */
-	@PostMapping(value="login")
+	@PostMapping(value="/login")
 	@ApiOperation(value="登录", notes="登录")
 	public Object login(@RequestBody BeUser beUser, HttpSession session) throws IOException {
 		if(beUser.getUserName()==null||beUser.getPassword()==null)
@@ -125,9 +117,9 @@ public class OverallController {
 		return Result.fail(message);
 	}
 
-	@PostMapping(value="loyout")
+	@PostMapping(value="logout")
 	@ApiOperation(value="注销", notes="注销")
-	public Object loyout(HttpSession session) {
+	public Object logout(HttpSession session) {
 		String u = stringRedisTemplate.opsForValue().get(session.getId().toString());
 		if(u==null)
 			return Result.fail("登录状态不存在");
@@ -143,7 +135,10 @@ public class OverallController {
 	@GetMapping("/userPermissions")
 	@ApiIgnore
 	public Object getUserPermission(HttpSession session) {
-		BeUser bu = (BeUser) session.getAttribute("user");
+		String u = stringRedisTemplate.opsForValue().get(session.getId().toString());
+		JSONObject json = JSONObject.fromObject(u);
+		User user = (User) JSONObject.toBean(json,User.class);
+		BeUser bu = beUserTransform(user);
 		return beUserService.getUserPermission(bu.getUid());
 	}
 	
@@ -155,10 +150,13 @@ public class OverallController {
 	 * @return
 	 */
 	// @PostMapping("/changePassword")
-	@PostMapping(value = "/changePassword")
+	@PostMapping(value = "/passwords")
 	@ApiOperation(value="修改密码", notes="修改密码")
 	public Object changePassword(String oldpassword, String newpassword, HttpSession session) throws IOException{
-		BeUser bu = (BeUser) session.getAttribute("user");
+		String u = stringRedisTemplate.opsForValue().get(session.getId().toString());
+		JSONObject json = JSONObject.fromObject(u);
+		User user = (User) JSONObject.toBean(json,User.class);
+		BeUser bu = beUserTransform(user);
 		if(!Md5Util.md5(oldpassword).equals(bu.getPassword())) {
 			String message = "原始密码错误";
 			return Result.fail(message);
@@ -166,9 +164,11 @@ public class OverallController {
 		String password = Md5Util.md5(newpassword);
 		bu.setPassword(password);
 		int flag = beUserService.changePassword(bu);
-		if(flag < 0)
+		if(flag <= 0)
 			return Result.fail("修改密码失败");
-		session.setAttribute("user", bu);
+		user = userTransform(bu);
+		json = JSONObject.fromObject(user);
+		stringRedisTemplate.opsForValue().set(session.getId().toString(), json.toString(),5,TimeUnit.HOURS);
 		return Result.success();
 	}
 	
@@ -181,6 +181,11 @@ public class OverallController {
 		user.setRole(beUser.getRole());
 		user.setRoleType(beUser.getRoleType());
 		return user;
+	}
+	
+	public BeUser beUserTransform(User user) {
+		BeUser beUser = beUserService.getById(user.getUid());
+		return beUser;
 	}
 
 }

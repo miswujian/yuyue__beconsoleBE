@@ -97,8 +97,30 @@ public class RsCurborrowrecord implements Serializable {
 	
 	@Transient
 	private String vipNo;
+	
+	@Transient
+	private Date vipEnd;
+	
+	@Transient
+	private RsUserfine rsUserfine;
 
 	public RsCurborrowrecord() {
+	}
+
+	public RsUserfine getRsUserfine() {
+		return rsUserfine;
+	}
+
+	public void setRsUserfine(RsUserfine rsUserfine) {
+		this.rsUserfine = rsUserfine;
+	}
+
+	public Date getVipEnd() {
+		return vipEnd;
+	}
+
+	public void setVipEnd(Date vipEnd) {
+		this.vipEnd = vipEnd;
 	}
 
 	public String getNikeName() {

@@ -3,8 +3,8 @@ package com.yuyue.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 
 
@@ -54,11 +54,61 @@ public class BsBookcaseinfo implements Serializable {
 	private double longitude;
 	
 	private Integer allocation;
+	
+	private byte status;
+	
+	@ManyToOne
+	@JoinColumn(name="warehouse_id")
+	private BeWarehouse beWarehouse;
+	
+	@ManyToOne
+	@JoinColumn(name="yw_id")
+	@JsonBackReference("beUser")
+	private BeUser beUser;
+	
+	@Transient
+	private String ywName;
 
 	@Transient
 	private List<BsBookcellinfo> bsBookcellinfos;
 
 	public BsBookcaseinfo() {
+	}
+
+	public String getYwName() {
+		return ywName;
+	}
+
+	public void setYwName(String ywName) {
+		this.ywName = ywName;
+	}
+
+	public byte getStatus() {
+		return status;
+	}
+
+	public void setStatus(byte status) {
+		this.status = status;
+	}
+
+	public BeUser getBeUser() {
+		return beUser;
+	}
+
+	public void setBeUser(BeUser beUser) {
+		this.beUser = beUser;
+	}
+
+	public BeWarehouse getBeWarehouse() {
+		return beWarehouse;
+	}
+
+	public void setBeWarehouse(BeWarehouse beWarehouse) {
+		this.beWarehouse = beWarehouse;
+	}
+
+	public void setAllocation(Integer allocation) {
+		this.allocation = allocation;
 	}
 
 	public Integer getCaseId() {

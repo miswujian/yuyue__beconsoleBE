@@ -22,4 +22,6 @@ public interface RsCurdonaterecordDAO extends JpaRepository<RsCurdonaterecord, I
 	(ArrayList<Byte> status, Date starttime, Date endtime, String nikeName, 
 			String vipNo, String isbn, ArrayList<String> isbns, Pageable pageable);
 	
+	public RsCurdonaterecord findByOrderNo(String orderNo);
+	
 }

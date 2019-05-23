@@ -46,7 +46,6 @@ public class BsBookinfo implements Serializable {
 	private Date createTime;
 
 	@Column(name = "edition_order")
-	@JsonBackReference(value = "editionOrder")
 	private Integer editionOrder;
 
 	private String format;
@@ -54,13 +53,11 @@ public class BsBookinfo implements Serializable {
 	private String isbn;
 
 	@Column(name = "page_count")
-	@JsonBackReference(value = "pageCount")
 	private Integer pageCount;
 
 	private float price;
 
 	@Column(name = "print_count")
-	@JsonBackReference(value = "printCount")
 	private Integer printCount;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -101,7 +98,7 @@ public class BsBookinfo implements Serializable {
 	private BsBookcategory bsBookcategory;
 	
 	@Transient
-	private String categoryName;
+	private String categoryId;
 
 	@ManyToOne
 	@JoinColumn(name = "pub_id")
@@ -117,13 +114,24 @@ public class BsBookinfo implements Serializable {
 	
 	@Transient
 	private List<BsBookinstore> bsBookinstores;
+	
+	@ManyToMany(mappedBy="bsBookinfos")
+	private List<BsGene> bsGenes;
 
-	public String getCategoryName() {
-		return categoryName;
+	public List<BsGene> getBsGenes() {
+		return this.bsGenes;
 	}
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public void setBsGenes(List<BsGene> bsGenes) {
+		this.bsGenes = bsGenes;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public void setBrowseCount(Integer browseCount) {

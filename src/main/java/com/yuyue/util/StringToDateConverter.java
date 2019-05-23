@@ -35,9 +35,9 @@ public class StringToDateConverter implements Converter<String, Date> {
                 return new Date(lDate);
             }
         } catch (Exception e) {
-            throw new RuntimeException(String.format("parser %s to Date fail", value));
+            throw new RuntimeException(String.format("String %s to Date 失败", value));
         }
-        throw new RuntimeException(String.format("parser %s to Date fail", value));
+        throw new RuntimeException(String.format("String %s to Date 失败", value));
     }
 
 

@@ -29,6 +29,20 @@ public class BeAdvertisementService {
 		return new Page4Navigator<>(pageFromJPA, navigatePages);
 	}
 	
+	public int changeStatus(int advId) {
+		BeAdvertisement beAdvertisement = beAdvertisementDAO.findOne(advId);
+		if(beAdvertisement.getStatus()==1)
+			beAdvertisement.setStatus((byte)2);
+		else
+			beAdvertisement.setStatus((byte)1);
+		try {
+			beAdvertisement = beAdvertisementDAO.saveAndFlush(beAdvertisement);
+			return beAdvertisement.getAdvId();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
 	public int add(BeAdvertisement beAdvertisement) {
 		try {
 			BeAdvertisement ba = beAdvertisementDAO.save(beAdvertisement);

@@ -1,5 +1,7 @@
 package com.yuyue.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,10 @@ public class BeWarehouseService {
 
 	@Autowired
 	public BeWarehouseDAO beWarehouseDAO;
+	
+	public List<BeWarehouse> list(){
+		return beWarehouseDAO.findAll();
+	}
 	
 	public Page4Navigator<BeWarehouse> list(int start, int size, int navigatePages){
 		Sort sort = new Sort(Sort.Direction.DESC,"warehouseId");

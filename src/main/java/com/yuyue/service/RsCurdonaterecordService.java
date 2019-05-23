@@ -97,6 +97,10 @@ public class RsCurdonaterecordService {
 		return rsCurdonaterecordDAO.findByStatusIsAndIsbnIs(isbn);
 	}
 	
+	public RsCurdonaterecord getByOrder(String orderNo) {
+		return rsCurdonaterecordDAO.findByOrderNo(orderNo);
+	}
+	
 	public int updateCurdonaterecord(RsCurdonaterecord rsCurdonaterecord) {
 		try {
 			RsCurdonaterecord rcd = rsCurdonaterecordDAO.save(rsCurdonaterecord);
@@ -114,6 +118,7 @@ public class RsCurdonaterecordService {
 	public void setUserinfoNull(RsCurdonaterecord rsCurdonaterecord) {
 		rsCurdonaterecord.setNikeName(rsCurdonaterecord.getBsUserinfo().getNickname());
 		rsCurdonaterecord.setVipNo(rsCurdonaterecord.getBsUserinfo().getMobilePhone());
+		rsCurdonaterecord.setVipEnd(rsCurdonaterecord.getBsUserinfo().getVipEnd());
 		rsCurdonaterecord.setBsUserinfo(null);
 	}
 	

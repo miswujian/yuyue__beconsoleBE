@@ -29,7 +29,7 @@ public class Application {
 	}
 	
 	/**
-	 * @RequestBady IO错误
+	 * @RequestBady IO错误 比如两个json一起传输
 	 * @return
 	 */
 	/*@Bean

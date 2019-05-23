@@ -92,6 +92,10 @@ public class RsHisborrowrecordService {
 		
 	}
 	
+	public RsHisborrowrecord getByOrderNo(String orderNo) {
+		return rsHisborrowrecordDAO.findByOrderNo(orderNo);
+	}
+	
 	public RsHisborrowrecord getHisborrowrecord(int borrowId) {
 		return rsHisborrowrecordDAO.findOne(borrowId);
 	}

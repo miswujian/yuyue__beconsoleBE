@@ -10,15 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.yuyue.pojo.BeSensitive;
 import com.yuyue.pojo.BsUserdynamic;
-import com.yuyue.pojo.BsUserinfo;
 import com.yuyue.service.BeSensitiveService;
 import com.yuyue.service.BsUserdynamicService;
 import com.yuyue.service.BsUserdynamiccmntService;
-import com.yuyue.service.BsUserinfoService;
 import com.yuyue.util.Lists;
 import com.yuyue.util.Page4Navigator;
 import com.yuyue.util.Result;
@@ -26,7 +25,6 @@ import com.yuyue.util.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 鱼群管理
@@ -34,11 +32,9 @@ import springfox.documentation.annotations.ApiIgnore;
  *
  */
 @RestController
+@RequestMapping("/shoal")
 @Api(value="鱼群管理接口", tags="鱼群管理接口")
 public class ShoalController {
-
-	@Autowired
-	private BsUserinfoService bsUserinfoService;
 	
 	@Autowired
 	private BsUserdynamicService bsUserdynamicService;
@@ -243,7 +239,7 @@ public class ShoalController {
 	 * @param words
 	 * @return
 	 */
-	@PostMapping(value="sensitives")
+	@PostMapping(value="/sensitives")
 	@ApiOperation(value="增加敏感词库", notes="用josn增加敏感词库")
 	public Object addSensitive(@RequestBody BeSensitive words) throws IOException{
 		if(words == null)

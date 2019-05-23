@@ -69,8 +69,19 @@ public class RsCurdonaterecord implements Serializable {
 	
 	@Transient
 	private String vipNo;
+	
+	@Transient
+	private Date vipEnd;
 
 	public RsCurdonaterecord() {
+	}
+
+	public Date getVipEnd() {
+		return vipEnd;
+	}
+
+	public void setVipEnd(Date vipEnd) {
+		this.vipEnd = vipEnd;
 	}
 
 	public String getBookName() {

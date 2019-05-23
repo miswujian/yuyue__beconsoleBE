@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -48,11 +49,32 @@ public class BsInvitecode implements Serializable {
 
 	@Column(name="vip_type")
 	private byte vipType;
+	
+	private byte status;
 
-	@Transient
+	@OneToMany(mappedBy="bsInvitecode")
 	private List<BsIvtuserinfo> bsIvtuserinfos;
-
+	
+	@Transient
+	private int count;
+	
 	public BsInvitecode() {
+	}
+
+	public byte getStatus() {
+		return status;
+	}
+
+	public void setStatus(byte status) {
+		this.status = status;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	public Integer getIvtcodeId() {

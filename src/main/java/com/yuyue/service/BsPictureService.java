@@ -70,8 +70,12 @@ public class BsPictureService {
 			bp.setStatus((byte) 0);
 		else
 			bp.setStatus((byte) 1);
-		bp = bsPictureDAO.save(bp);
-		return bp.getPicId();
+		try {
+			bp = bsPictureDAO.save(bp);
+			return bp.getPicId();
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 	
 	public BsPicture get(int picId) {

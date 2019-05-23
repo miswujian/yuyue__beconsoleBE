@@ -10,6 +10,6 @@ public interface BeInstitutionDAO extends JpaRepository<BeInstitution, Integer> 
 
 	public List<BeInstitution> findByBeInstitution(BeInstitution beInstitution);
 	
-	public List<BeInstitution> findByLever(int lever);
+	public List<BeInstitution> findByLever(Integer lever);
 	
 }

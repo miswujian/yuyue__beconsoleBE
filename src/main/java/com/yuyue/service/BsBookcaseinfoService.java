@@ -19,6 +19,10 @@ public class BsBookcaseinfoService {
 	@Autowired
 	private BsBookcaseinfoDAO bsBookcaseinfoDAO;
 	
+	public List<BsBookcaseinfo> list(int warehouseId){
+		return bsBookcaseinfoDAO.queryByWarehouseId(warehouseId);
+	}
+	
 	public int getAllocation() {
 		List<BsBookcaseinfo> bbs = bsBookcaseinfoDAO.findByAllocation(1);
 		if(bbs == null || bbs.isEmpty())
@@ -31,6 +35,22 @@ public class BsBookcaseinfoService {
 		Pageable pageable = new PageRequest(start, size, sort);
 		Page<BsBookcaseinfo> pageFromJPA = bsBookcaseinfoDAO.findAll(pageable);
 		return new Page4Navigator<>(pageFromJPA, navigatePages);
+	}
+	
+	public List<BsBookcaseinfo> list(){
+		return bsBookcaseinfoDAO.findAll();
+	}
+	
+	public void setUserNull(BsBookcaseinfo bbc) {
+		if(bbc.getBeUser()!=null) {
+			bbc.setYwName(bbc.getBeUser().getUserName());
+			bbc.setBeUser(null);
+		}
+	}
+	
+	public void setUserNull(List<BsBookcaseinfo> bbcs) {
+		for(BsBookcaseinfo bbc : bbcs)
+			setUserNull(bbc);
 	}
 	
 	public int addBookcaseinfo(BsBookcaseinfo bbc) {

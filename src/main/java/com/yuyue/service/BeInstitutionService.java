@@ -22,6 +22,10 @@ public class BeInstitutionService {
 		return bits;
 	}
 	
+	public List<BeInstitution> listinfo(){
+		return beInstitutionDAO.findByLever(3);
+	}
+	
 	public void getBeInstitutionByParent(BeInstitution beInstitution) {
 		List<BeInstitution> bits = beInstitutionDAO.findByBeInstitution(beInstitution);
 		beInstitution.setBeInstitutions(bits);

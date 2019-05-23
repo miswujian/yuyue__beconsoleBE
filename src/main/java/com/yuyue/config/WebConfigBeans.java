@@ -10,6 +10,11 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import com.yuyue.util.StringToDateConverter;
 
+/**
+ * 适配器 配置类
+ * @author 吴俭
+ *
+ */
 @Configuration
 public class WebConfigBeans {
 
@@ -26,6 +31,9 @@ public class WebConfigBeans {
         if(initializer.getConversionService()!=null) {
             GenericConversionService genericConversionService = (GenericConversionService)initializer.getConversionService();           
 
+            /**
+             * 增加适配器
+             */
             genericConversionService.addConverter(new StringToDateConverter());
 
         }

@@ -9,7 +9,7 @@
     {
       "sourceType": "com.yuyue.config.DruidConfig",
       "name": "spring.datasource",
-      "sourceMethod": "druidDataSource()",
+      "sourceMethod": "public javax.sql.DataSource druidDataSource() ",
       "type": "javax.sql.DataSource"
     }
   ],

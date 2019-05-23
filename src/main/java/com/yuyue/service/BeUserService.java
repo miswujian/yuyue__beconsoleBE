@@ -1,6 +1,7 @@
 package com.yuyue.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.yuyue.dao.BeUserDAO;
 import com.yuyue.dao.RsRolepermissionDAO;
+import com.yuyue.pojo.BeRole;
 import com.yuyue.pojo.BeUser;
 import com.yuyue.pojo.RsRolepermission;
+import com.yuyue.util.Md5Util;
 import com.yuyue.util.Page4Navigator;
+import com.yuyue.util.UpdateUtil;
 
 @Service
 public class BeUserService {
@@ -23,10 +27,10 @@ public class BeUserService {
 	private BeUserDAO beUserDAO;
 	
 	@Autowired
-	private BeRoleService beRoleService;
+	private RsRolepermissionDAO rsRolepermissionDAO;
 	
 	@Autowired
-	private RsRolepermissionDAO rsRolepermissionDAO;
+	private BeRoleService beRoleService;
 	
 	public BeUser login(String name, String password) {
 		BeUser bu = beUserDAO.getByUserNameAndPassword(name, password);
@@ -38,8 +42,45 @@ public class BeUserService {
 	}
 	
 	public int changePassword(BeUser beUser) {
-		BeUser bu = beUserDAO.save(beUser);
-		return bu.getUid();
+		try {
+			BeUser bu = beUserDAO.save(beUser);
+			return bu.getUid();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public BeUser getById(int uid) {
+		return beUserDAO.findOne(uid);
+	}
+	
+	public int add(BeUser beUser) {
+		try {
+			BeRole beRole = beRoleService.getById(beUser.getRoleId());
+			beUser.setBeRole(beRole);
+			System.err.println(beUser.getBeRole().getId());
+			beUser.setPassword(Md5Util.md5(beUser.getPassword()));
+			beUser.setRegistrationtime(new Date());
+			beUserDAO.save(beUser);
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public int update(BeUser beUser) {
+		try {
+			if(beUser.getPassword()!=null)
+				beUser.setPassword(Md5Util.md5(beUser.getPassword()));
+			BeUser bu = getById(beUser.getUid());
+			BeRole beRole = beRoleService.getById(beUser.getRoleId());
+			beUser.setBeRole(beRole);
+			UpdateUtil.copyNullProperties(bu, beUser);
+			beUserDAO.saveAndFlush(beUser);
+			return 1;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 	
 	public List<BeUser> list(){

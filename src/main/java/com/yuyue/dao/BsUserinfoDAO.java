@@ -6,4 +6,6 @@ import com.yuyue.pojo.BsUserinfo;
 
 public interface BsUserinfoDAO extends JpaRepository<BsUserinfo, Integer> {
 	
+	public BsUserinfo findByMobilePhone(String mobilePhone);
+	
 }

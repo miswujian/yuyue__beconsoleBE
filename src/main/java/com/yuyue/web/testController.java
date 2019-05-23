@@ -16,6 +16,7 @@ import com.yuyue.service.RsRolepermissionService;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
+@RequestMapping("/test")
 @ApiIgnore
 public class testController {
 

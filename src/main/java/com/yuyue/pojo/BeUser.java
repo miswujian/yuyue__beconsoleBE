@@ -56,14 +56,49 @@ public class BeUser implements Serializable {
 	@JoinColumn(name="institutionid")
 	private BeInstitution beInstitution;
 	
+	@OneToMany(mappedBy="beUser")
+	@JsonBackReference(value = "bsBookcaseinfos")
+	private List<BsBookcaseinfo> bsBookcaseinfos;
+	
 	@Transient
 	private String role;
+	
+	@Transient
+	private Integer roleId;
 	
 	@Transient
 	private List<String> permissions;
 	
 	@Transient
 	private int roleType;
+
+	public Integer getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
+
+	public List<BsBookcaseinfo> getBsBookcaseinfos() {
+		return bsBookcaseinfos;
+	}
+
+	public void setBsBookcaseinfos(List<BsBookcaseinfo> bsBookcaseinfos) {
+		this.bsBookcaseinfos = bsBookcaseinfos;
+	}
+
+	public Date getRegistrationtime() {
+		return registrationtime;
+	}
+
+	public void setRegistrationtime(Date registrationtime) {
+		this.registrationtime = registrationtime;
+	}
+
+	public void setRoleType(int roleType) {
+		this.roleType = roleType;
+	}
 
 	public Integer getRoleType() {
 		return roleType;
@@ -100,11 +135,11 @@ public class BeUser implements Serializable {
 	public BeUser() {
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return this.uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 

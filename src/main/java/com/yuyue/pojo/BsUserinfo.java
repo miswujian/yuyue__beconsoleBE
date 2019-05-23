@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="bs_userinfo")
+@JsonIgnoreProperties({ "handler","hibernateLazyInitializer"})
 @NamedQuery(name="BsUserinfo.findAll", query="SELECT b FROM BsUserinfo b")
 public class BsUserinfo implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -107,6 +109,9 @@ public class BsUserinfo implements Serializable {
 
 	@Column(name="weixin_uname")
 	private String weixinUname;
+	
+	@Column(name="freeze_point")
+	private Integer freezePoint;
 
 	//bi-directional many-to-one association to BsUserdynamic
 	@OneToMany(mappedBy="bsUserinfo")
@@ -129,8 +134,50 @@ public class BsUserinfo implements Serializable {
 	//bi-directional many-to-one association to RsUserdynamiclike
 	@OneToMany(mappedBy="bsUserinfo")
 	private List<RsUserdynamiclike> rsUserdynamiclikes;
+	
+	@OneToMany(mappedBy="bsUserinfo")
+	@JsonBackReference("rsUserfines")
+	private List<RsUserfine> rsUserfines;
+	
+	@Transient
+	private String custName;
+	
+	@Transient
+	private BsIvtuserinfo bsIvtuserinfo;
 
 	public BsUserinfo() {
+	}
+
+	public List<RsUserfine> getRsUserfines() {
+		return rsUserfines;
+	}
+
+	public void setRsUserfines(List<RsUserfine> rsUserfines) {
+		this.rsUserfines = rsUserfines;
+	}
+
+	public Integer getFreezePoint() {
+		return freezePoint;
+	}
+
+	public void setFreezePoint(Integer freezePoint) {
+		this.freezePoint = freezePoint;
+	}
+
+	public String getCustName() {
+		return custName;
+	}
+
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
+
+	public BsIvtuserinfo getBsIvtuserinfo() {
+		return bsIvtuserinfo;
+	}
+
+	public void setBsIvtuserinfo(BsIvtuserinfo bsIvtuserinfo) {
+		this.bsIvtuserinfo = bsIvtuserinfo;
 	}
 
 	public List<BsFamilyinfo> getBsFamilyinfos() {

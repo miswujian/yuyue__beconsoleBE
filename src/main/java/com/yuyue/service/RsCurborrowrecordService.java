@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
 import com.yuyue.dao.RsCurborrowrecordDAO;
 import com.yuyue.pojo.RsCurborrowrecord;
 import com.yuyue.util.Page4Navigator;
@@ -22,6 +21,9 @@ public class RsCurborrowrecordService {
 
 	@Autowired
 	private RsCurborrowrecordDAO rsCurborrowrecordDAO;
+	
+	@Autowired
+	private RsUserfineService rsUserfineService;
 
 	public Page4Navigator<RsCurborrowrecord> list(int start, int size, int navigatePages) {
 		Sort sort = new Sort(Sort.Direction.DESC, "borrowId");
@@ -180,10 +182,15 @@ public class RsCurborrowrecordService {
 			setBookinfoNull(rcb);
 		}
 	}
+	
+	public void setUserfine(RsCurborrowrecord rcb) {
+		rcb.setRsUserfine(rsUserfineService.getByOrderNo(rcb.getOrderNo()));
+	}
 
 	public void setUserinfoNull(RsCurborrowrecord rsCurborrowrecord) {
 		rsCurborrowrecord.setNikeName(rsCurborrowrecord.getBsUserinfo().getNickname());
 		rsCurborrowrecord.setVipNo(rsCurborrowrecord.getBsUserinfo().getMobilePhone());
+		rsCurborrowrecord.setVipEnd(rsCurborrowrecord.getBsUserinfo().getVipEnd());
 		rsCurborrowrecord.setBsUserinfo(null);
 	}
 

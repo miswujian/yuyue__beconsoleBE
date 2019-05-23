@@ -47,6 +47,11 @@ public class BsBookinstore implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="cell_id")
 	private BsBookcellinfo bsBookcellinfo;
+	
+	
+	@ManyToOne
+	@JoinColumn(name="warehouse_id")
+	private BeWarehouse beWarehouse;
 
 	//bi-directional many-to-one association to RsCurborrowrecord
 	/*@OneToMany(mappedBy="bsBookinstore")
@@ -57,6 +62,14 @@ public class BsBookinstore implements Serializable {
 	private List<RsHisborrowrecord> rsHisborrowrecords;*/
 
 	public BsBookinstore() {
+	}
+
+	public BeWarehouse getBeWarehouse() {
+		return beWarehouse;
+	}
+
+	public void setBeWarehouse(BeWarehouse beWarehouse) {
+		this.beWarehouse = beWarehouse;
 	}
 
 	public BigInteger getBookId() {

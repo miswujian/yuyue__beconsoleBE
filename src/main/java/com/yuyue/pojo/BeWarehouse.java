@@ -3,9 +3,12 @@ package com.yuyue.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -59,11 +62,35 @@ public class BeWarehouse implements Serializable {
 	@JoinColumn(name="department_id")
 	private BeDepartment beDepartment;
 	
+	@OneToMany(mappedBy="beWarehouse")
+	@JsonBackReference("bsBookcaseinfos")
+	private List<BsBookcaseinfo> bsBookcaseinfos;
+	
+	@OneToMany(mappedBy="beWarehouse")
+	@JsonBackReference("bsBookinstores")
+	private List<BsBookinstore> bsBookinstores;
+	
 	@Transient
 	private Integer departmentId;
 
 	public Date getCreateTime() {
 		return createTime;
+	}
+
+	public List<BsBookinstore> getBsBookinstores() {
+		return bsBookinstores;
+	}
+
+	public void setBsBookinstores(List<BsBookinstore> bsBookinstores) {
+		this.bsBookinstores = bsBookinstores;
+	}
+
+	public List<BsBookcaseinfo> getBsBookcaseinfos() {
+		return bsBookcaseinfos;
+	}
+
+	public void setBsBookcaseinfos(List<BsBookcaseinfo> bsBookcaseinfos) {
+		this.bsBookcaseinfos = bsBookcaseinfos;
 	}
 
 	public void setCreateTime(Date createTime) {

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yuyue.pojo.BeAdvertisement;
+import com.yuyue.pojo.BsBookcaseinfo;
 import com.yuyue.pojo.BsBookcategory;
 import com.yuyue.pojo.BsBookinfo;
 import com.yuyue.pojo.BsBooksubject;
@@ -28,6 +31,7 @@ import com.yuyue.pojo.BsPicture;
 import com.yuyue.pojo.RsBookinsubject;
 import com.yuyue.properties.FileUploadProperteis;
 import com.yuyue.service.BeAdvertisementService;
+import com.yuyue.service.BsBookcaseinfoService;
 import com.yuyue.service.BsBookcategoryService;
 import com.yuyue.service.BsBookinfoService;
 import com.yuyue.service.BsBooksubjectService;
@@ -36,6 +40,7 @@ import com.yuyue.service.RsBookinsubjectService;
 import com.yuyue.util.ImageUtil;
 import com.yuyue.util.Page4Navigator;
 import com.yuyue.util.Result;
+import com.yuyue.util.UpdateUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +54,7 @@ import springfox.documentation.annotations.ApiIgnore;
  *
  */
 @RestController
+@RequestMapping("/website")
 @Api(value="网站管理接口", tags="网站管理接口")
 public class WebsiteController {
 
@@ -74,6 +80,9 @@ public class WebsiteController {
 	
 	@Autowired
 	private BeAdvertisementService beAdvertisementService;
+	
+	@Autowired
+	private BsBookcaseinfoService bsBookcaseinfoService;
 
 	/**
 	 * 专题设置
@@ -86,9 +95,11 @@ public class WebsiteController {
 	@ApiOperation(value="专题设置查询", notes="专题设置查询")
 	public Page4Navigator<BsBooksubject> subject(
 			@ApiParam(name="start",required=false)@RequestParam(value = "start", defaultValue = "0") int start,
-			@ApiParam(name="size",required=false)@RequestParam(value = "size", defaultValue = "5") int size) {
+			@ApiParam(name="size",required=false)@RequestParam(value = "size", defaultValue = "5") int size,
+			@ApiParam(name="isShow",required=false)@RequestParam(value = "isShow", defaultValue = "")String isShow,
+			@ApiParam(name="keyword",required=false)@RequestParam(value = "keyword", defaultValue = "")String keyword) {
 		start = start < 0 ? 0 : start;
-		return bsBooksubjectService.list(start, size, 5);
+		return bsBooksubjectService.list(start, size, 5, isShow, keyword);
 	}
 
 	/**
@@ -124,11 +135,12 @@ public class WebsiteController {
 		if (bsBooksubject.getBooksubjectId() <= 0)
 			return Result.fail("请输入正确的booksubjectId");
 		BsBooksubject bbs = bsBooksubjectService.getSubject(bsBooksubject.getBooksubjectId());
-		bbs.setSort(bsBooksubject.getSort());
+		/*bbs.setSort(bsBooksubject.getSort());
 		bbs.setSubjectName(bsBooksubject.getSubjectName());
-		bbs.setIsShow(bsBooksubject.getIsShow());
-		bbs.setUpdateTime(new Date());
-		int flag = bsBooksubjectService.updateSubject(bbs);
+		bbs.setIsShow(bsBooksubject.getIsShow());*/
+		UpdateUtil.copyNullProperties(bbs, bsBooksubject);
+		bsBooksubject.setUpdateTime(new Date());
+		int flag = bsBooksubjectService.updateSubject(bsBooksubject);
 		if (flag <= 0)
 			return Result.fail("更新失败");
 		return Result.success();
@@ -219,9 +231,15 @@ public class WebsiteController {
 	 */
 	@PostMapping("/bookinsubjects")
 	@ApiOperation(value="增加书籍和主题的关系", notes="增加书籍和主题的关系")
-	public Object addBookinsubject(@RequestBody BsBookinfo bsBookinfo, @RequestBody BsBooksubject bsBooksubject) {
+	public Object addBookinsubject(
+			@ApiParam(name = "bookinfoId")@RequestParam(value = "bookinfoId", defaultValue = "0")int bookinfoId, 
+			@ApiParam(name = "booksubjectId")@RequestParam(value = "booksubjectId", defaultValue = "0")int booksubjectId) {
+		if (bookinfoId <= 0 || booksubjectId <= 0)
+			return Result.fail("添加失败");
+		BsBookinfo bsBookinfo = bsBookinfoService.getBook(bookinfoId);
+		BsBooksubject bsBooksubject = bsBooksubjectService.getSubject(booksubjectId);
 		if (bsBookinfo == null || bsBooksubject == null)
-			return Result.fail("未获取到输入值");
+			return Result.fail("添加失败");
 		RsBookinsubject rsBookinsubject = new RsBookinsubject();
 		rsBookinsubject.setBsBookinfo(bsBookinfo);
 		rsBookinsubject.setBsBooksubject(bsBooksubject);
@@ -307,8 +325,10 @@ public class WebsiteController {
 	@ApiOperation(value="更新banner", notes="更新banner")
 	public Object updatePicture(BsPicture bsPicture, 
 			@ApiParam(name="image",required=false)MultipartFile image) throws IOException {
+		if(bsPicture.getPicId()==null)
+			return Result.fail("picId不能为空");
 		saveOrUpdateOrDeleteImageFile(image, bsPicture, 2);
-		int flag = bsPictureService.add(bsPicture);
+		int flag = bsPictureService.update(bsPicture);
 		if (flag <= 0)
 			return Result.fail("更新失败");
 		return Result.success();
@@ -341,7 +361,6 @@ public class WebsiteController {
 			System.err.println(file.getAbsolutePath());
 			if (!file.getParentFile().exists())
 				file.getParentFile().mkdirs();
-
 			if (image != null) {
 				image.transferTo(file);
 				BufferedImage img = ImageUtil.change2jpg(file);
@@ -349,28 +368,32 @@ public class WebsiteController {
 				bsPicture.setPicUrl(path + "picture/" + fileName);
 			} else
 				bsPicture.setPicUrl("暂无图片");
-
 		} else if (size == 2) {
-			String fileName = bsPicture.getPicUrl();
-			if (!fileName.equals("暂无图片")) {
-				File file = new File(fileName.split(path)[1]);
-				file.delete();
-			}
-			fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
-			File file = new File("priture/" + fileName);
-			if (!file.getParentFile().exists())
-				file.getParentFile().mkdirs();
-			if (image != null) {
+			BsPicture bp = bsPictureService.get(bsPicture.getPicId());
+			UpdateUtil.copyNullProperties(bp, bsPicture);
+			bsPicture.setPicUrl(bp.getPicUrl());
+			//图片不为空才进行图片的替换
+			if(image != null) {
+				String fileName = bsPicture.getPicUrl();
+				if (!fileName.equals("暂无图片")) {
+					File file = new File(fileUploadProperteis.getUploadFolder()+File.separator+
+							fileName.split(path)[1].split("/")[0]+File.separator+fileName.split(path)[1].split("/")[1]);
+					file.delete();
+				}
+				fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
+				File file = new File(fileUploadProperteis.getUploadFolder()+"/picture/" + fileName);
+				if (!file.getParentFile().exists())
+					file.getParentFile().mkdirs();
 				image.transferTo(file);
 				BufferedImage img = ImageUtil.change2jpg(file);
 				ImageIO.write(img, "jpg", file);
-				bsPicture.setPicUrl(path + "pciture/" + fileName);
-			} else
-				bsPicture.setPicUrl("暂无图片");
+				bsPicture.setPicUrl(path + "picture/" + fileName);
+			}
 		} else if (size == 3) {
 			String fileName = bsPicture.getPicUrl();
 			if (!fileName.equals("暂无图片")) {
-				File file = new File(fileName.split(path)[1]);
+				File file = new File(fileUploadProperteis.getUploadFolder()+File.separator+
+						fileName.split(path)[1].split("/")[0]+File.separator+fileName.split(path)[1].split("/")[1]);
 				file.delete();
 			}
 		}
@@ -385,12 +408,16 @@ public class WebsiteController {
 	 */
 	public void saveOrUpdateOrDeleteImageFile2(MultipartFile image, BeAdvertisement beAdvertisement, int size) throws IOException {
 		if (size == 1) {
+			if(beAdvertisement.getCaseId() != null) {
+				BsBookcaseinfo bbc = new BsBookcaseinfo();
+				bbc.setCaseId(beAdvertisement.getCaseId());
+				beAdvertisement.setBsBookcaseinfo(bbc);
+			}
 			String fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
 			File file = new File(fileUploadProperteis.getUploadFolder() +"/adv/"+ fileName);
 			System.err.println(file.getAbsolutePath());
 			if (!file.getParentFile().exists())
 				file.getParentFile().mkdirs();
-
 			if (image != null) {
 				image.transferTo(file);
 				BufferedImage img = ImageUtil.change2jpg(file);
@@ -400,26 +427,36 @@ public class WebsiteController {
 				beAdvertisement.setAdvUrl("暂无图片");
 
 		} else if (size == 2) {
-			String fileName = beAdvertisement.getAdvUrl();
-			if (!fileName.equals("暂无图片")) {
-				File file = new File(fileName.split(path)[1]);
-				file.delete();
+			BeAdvertisement ba = beAdvertisementService.get(beAdvertisement.getAdvId());
+			if(beAdvertisement.getCaseId() != null) {
+				BsBookcaseinfo bbc = new BsBookcaseinfo();
+				bbc.setCaseId(beAdvertisement.getCaseId());
+				beAdvertisement.setBsBookcaseinfo(bbc);
 			}
-			fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
-			File file = new File("adv/" + fileName);
-			if (!file.getParentFile().exists())
-				file.getParentFile().mkdirs();
-			if (image != null) {
+			UpdateUtil.copyNullProperties(ba, beAdvertisement);
+			beAdvertisement.setAdvUrl(ba.getAdvUrl());
+			//图片不为空才进行图片的替换
+			if(image != null) {
+				String fileName = beAdvertisement.getAdvUrl();
+				if (!fileName.equals("暂无图片")) {
+					File file = new File(fileUploadProperteis.getUploadFolder()+File.separator+
+							fileName.split(path)[1].split("/")[0]+File.separator+fileName.split(path)[1].split("/")[1]);
+					file.delete();
+				}
+				fileName = new Date().getTime() + (int) (Math.random() * 100) + ".jpg";
+				File file = new File(fileUploadProperteis.getUploadFolder()+"/adv/" + fileName);
+				if (!file.getParentFile().exists())
+					file.getParentFile().mkdirs();
 				image.transferTo(file);
 				BufferedImage img = ImageUtil.change2jpg(file);
 				ImageIO.write(img, "jpg", file);
 				beAdvertisement.setAdvUrl(path + "adv/" + fileName);
-			} else
-				beAdvertisement.setAdvUrl("暂无图片");
+			}
 		} else if (size == 3) {
 			String fileName = beAdvertisement.getAdvUrl();
 			if (!fileName.equals("暂无图片")) {
-				File file = new File(fileName.split(path)[1]);
+				File file = new File(fileUploadProperteis.getUploadFolder()+File.separator+
+						fileName.split(path)[1].split("/")[0]+File.separator+fileName.split(path)[1].split("/")[1]);
 				file.delete();
 			}
 		}
@@ -475,8 +512,6 @@ public class WebsiteController {
 			 BeAdvertisement beAdvertisement) throws IOException {
 		if(beAdvertisement == null)
 			return Result.fail("未获取到输入值");
-		if(beAdvertisement.getAdvId() <= 0)
-			return Result.fail("请输入正确的advId");
 		saveOrUpdateOrDeleteImageFile2(image, beAdvertisement, 1);
 		int flag = beAdvertisementService.add(beAdvertisement);
 		if(flag<=0)
@@ -522,6 +557,26 @@ public class WebsiteController {
 		if(flag <= 0)
 			return Result.fail("删除失败");
 		return Result.success();
+	}
+	
+	@PostMapping("/advertisements/{advId}")
+	@ApiIgnore
+	public Object changeAdvStatus(@PathVariable("advId") int advId) {
+		int flag = beAdvertisementService.changeStatus(advId);
+		if(flag <= 0)
+			return Result.fail("更换状态失败");
+		return Result.success();
+	}
+	
+	@GetMapping("/bookcaseinfo")
+	@ApiOperation(value = "书柜信息", notes = "书柜信息")
+	public Object getBookcaseinfo() {
+		List<BsBookcaseinfo> bbcs = bsBookcaseinfoService.list();
+		Map<Integer, String> bbcm = new HashMap<>();
+		for(BsBookcaseinfo bbc : bbcs) {
+			bbcm.put(bbc.getCaseId(), bbc.getCaseName());
+		}
+		return bbcm;
 	}
 
 }

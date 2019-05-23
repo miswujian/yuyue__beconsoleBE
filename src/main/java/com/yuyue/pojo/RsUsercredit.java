@@ -6,7 +6,6 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -54,10 +53,33 @@ public class RsUsercredit implements Serializable {
 	private BsUserinfo bsUserinfo;
 
 	//bi-directional many-to-one association to RsVipplanorder
-	@OneToMany(mappedBy="rsUsercredit")
-	private List<RsVipplanorder> rsVipplanorders;
+	/*@OneToMany(mappedBy="rsUsercredit")
+	@JsonIgnoreProperties("rsVipplanorders")
+	private List<RsVipplanorder> rsVipplanorders;*/
+	
+	@Transient
+	private String nikeName;
+	
+	@Transient
+	private String vipNo;
 
 	public RsUsercredit() {
+	}
+
+	public String getNikeName() {
+		return nikeName;
+	}
+
+	public void setNikeName(String nikeName) {
+		this.nikeName = nikeName;
+	}
+
+	public String getVipNo() {
+		return vipNo;
+	}
+
+	public void setVipNo(String vipNo) {
+		this.vipNo = vipNo;
 	}
 
 	public String getUsercreditId() {
@@ -124,15 +146,15 @@ public class RsUsercredit implements Serializable {
 		this.bsUserinfo = bsUserinfo;
 	}
 
-	public List<RsVipplanorder> getRsVipplanorders() {
+	/*public List<RsVipplanorder> getRsVipplanorders() {
 		return this.rsVipplanorders;
 	}
 
 	public void setRsVipplanorders(List<RsVipplanorder> rsVipplanorders) {
 		this.rsVipplanorders = rsVipplanorders;
-	}
+	}*/
 
-	public RsVipplanorder addRsVipplanorder(RsVipplanorder rsVipplanorder) {
+	/*public RsVipplanorder addRsVipplanorder(RsVipplanorder rsVipplanorder) {
 		getRsVipplanorders().add(rsVipplanorder);
 		rsVipplanorder.setRsUsercredit(this);
 
@@ -144,6 +166,6 @@ public class RsUsercredit implements Serializable {
 		rsVipplanorder.setRsUsercredit(null);
 
 		return rsVipplanorder;
-	}
+	}*/
 
 }

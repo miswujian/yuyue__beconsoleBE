@@ -20,4 +20,6 @@ public interface RsHisborrowrecordDAO extends JpaRepository<RsHisborrowrecord, I
 	(ArrayList<Byte> status,Date starttime, Date endtime, ArrayList<Byte> deliverType,ArrayList<Byte> returnWay, 
 			String nikeName, String vipNo, String bookName, String rfid, Pageable pageable);
 	
+	public RsHisborrowrecord findByOrderNo(String orderNo);
+	
 }

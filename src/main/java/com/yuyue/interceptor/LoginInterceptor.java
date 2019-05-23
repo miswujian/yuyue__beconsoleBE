@@ -12,7 +12,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yuyue.pojo.BeUser;
 import com.yuyue.pojo.User;
 
 import net.sf.json.JSONObject;

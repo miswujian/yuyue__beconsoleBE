@@ -5,6 +5,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * redis缓存和事务用的是aop技术 service里面的方法在service里直接调用是不会触发的 需要绕一绕 使aop来拦截
+ * @author 吴俭
+ *
+ */
 @Component
 public class SpringContextUtil implements ApplicationContextAware {
 	

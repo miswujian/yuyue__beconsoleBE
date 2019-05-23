@@ -1,15 +1,21 @@
 package com.yuyue.web;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,27 +26,32 @@ import com.yuyue.pojo.BeRole;
 import com.yuyue.pojo.BeUser;
 import com.yuyue.pojo.BeWarehouse;
 import com.yuyue.pojo.RsRolepermission;
+import com.yuyue.pojo.User;
 import com.yuyue.service.BeDepartmentService;
 import com.yuyue.service.BeInstitutionService;
 import com.yuyue.service.BePermissionService;
 import com.yuyue.service.BeRoleService;
 import com.yuyue.service.BeUserService;
 import com.yuyue.service.BeWarehouseService;
+import com.yuyue.service.BsBookcaseinfoService;
 import com.yuyue.service.RsRolepermissionService;
 import com.yuyue.util.Page4Navigator;
 import com.yuyue.util.Result;
+import com.yuyue.util.UpdateUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import net.sf.json.JSONObject;
 
 /**
- * 员工管理的增加和修改  机柜管理和仓库管理
+ * 机柜管理
  * 系统管理
  * @author 吴俭
  *
  */
 @RestController
+@RequestMapping("/system")
 @Api(value="系统管理接口", tags="系统管理接口")
 public class SystemController {
 
@@ -64,6 +75,21 @@ public class SystemController {
 	
 	@Autowired
 	private BeDepartmentService beDepartmentService;
+	
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate = null;
+	
+	@Autowired
+	private BsBookcaseinfoService bsBookcaseinfoService;
+	
+	@GetMapping("/bookcaseinfos")
+	@ApiOperation(value = "机柜查询", notes="机柜查询")
+	public Object listBookcaseinfo(
+			@ApiParam(name="start",required=false)@RequestParam(value = "start",defaultValue = "0")int start,
+			@ApiParam(name="size",required=false)@RequestParam(value="size",defaultValue="10")int size){
+		start = start<0?0:start;
+		return bsBookcaseinfoService.list(start, size, 5);
+	}
 	
 	/**
 	 * 权限集合
@@ -121,6 +147,48 @@ public class SystemController {
 			@ApiParam(name="size",required=false)@RequestParam(value = "size", defaultValue = "10") int size){
 		start = start>0?start:0;
 		return beUserService.list(start, size, 5);
+	}
+	
+	@GetMapping("/systeminfos")
+	@ApiOperation(value = "新增员工所需信息", notes="新增员工所需信息")
+	public Object systeminfo() {
+		List<BeInstitution> bis = beInstitutionService.listinfo();
+		List<BeDepartment> bds = beDepartmentService.list();
+		List<BeRole> brs = beRoleService.list();
+		Map<String, Object> map = new HashMap<>();
+		map.put("institution", bis);
+		map.put("department", bds);
+		map.put("role", brs);
+		return map;
+	}
+	
+	@PostMapping("/users")
+	@ApiOperation(value = "新增员工", notes = "新增员工")
+	public Object addUser(@RequestBody BeUser beUser) {
+		int flag = beUserService.add(beUser);
+		if(flag <= 0)
+			return Result.fail("新增失败");
+		return Result.success();
+	}
+	
+	@GetMapping("/users/{id}")
+	@ApiOperation(value="员工信息获取", notes="员工信息获取")
+	public Object getUser(@PathVariable(name="id")int id) {
+		return beUserService.getById(id);
+	}
+	
+	@PutMapping("/users")
+	@ApiOperation(value = "修改员工信息", notes = "修改员工信息")
+	public Object updateUser(@RequestBody BeUser beUser, HttpSession session) {
+		String u = stringRedisTemplate.opsForValue().get(session.getId().toString());
+		JSONObject json = JSONObject.fromObject(u);
+		User user = (User) JSONObject.toBean(json,User.class);
+		if(!(""+user.getUid()).equals(""+beUser.getUid()))
+			return Result.fail("修改失败");
+		int flag = beUserService.update(beUser);
+		if(flag <= 0)
+			return Result.fail("修改失败");
+		return Result.success();
 	}
 	
 	/**
@@ -183,14 +251,15 @@ public class SystemController {
 		if(beWarehouse.getWarehouseId() == null||beWarehouse.getWarehouseId() <= 0)
 			return Result.fail("请输入正确的id");
 		BeWarehouse bw = beWarehouseService.getWarehouse(beWarehouse.getWarehouseId());
-		if(beWarehouse.getWarehouseCode()==null)
+		UpdateUtil.copyNullProperties(bw, beWarehouse);
+		/*if(beWarehouse.getWarehouseCode()==null)
 			beWarehouse.setWarehouseCode(bw.getWarehouseCode());
 		if(beWarehouse.getLatitude()==null)
 			beWarehouse.setLatitude(bw.getLatitude());
 		if(beWarehouse.getLongitude()==null)
 			beWarehouse.setLongitude(bw.getLongitude());
 		if(beWarehouse.getCreateTime()==null)
-			beWarehouse.setCreateTime(bw.getCreateTime());
+			beWarehouse.setCreateTime(bw.getCreateTime());*/
 		beWarehouse.setUpdateTime(new Date());
 		if(beWarehouse.getDepartmentId()>0&&beWarehouse.getDepartmentId()!=null) {
 			BeDepartment bd = new BeDepartment();
@@ -236,7 +305,7 @@ public class SystemController {
 	 * 部门信息
 	 * @return
 	 */
-	@GetMapping("departments")
+	@GetMapping("/departments")
 	@ApiOperation(value="部门信息", notes="部门信息")
 	public Object getDepartment() {
 		return beDepartmentService.list();

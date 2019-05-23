@@ -8,6 +8,6 @@ import com.yuyue.pojo.BsBookcellinfo;
 
 public interface BsBookcellinfoDAO extends JpaRepository<BsBookcellinfo, Integer> {
 
-	List<BsBookcellinfo> findByRepair(int repair);
+	List<BsBookcellinfo> findByRepair(Integer repair);
 	
 }

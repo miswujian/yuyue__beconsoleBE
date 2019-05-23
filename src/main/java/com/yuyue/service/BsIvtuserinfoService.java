@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yuyue.dao.BsIvtuserinfoDAO;
 import com.yuyue.pojo.BsInvitecode;
+import com.yuyue.pojo.BsIvtuserinfo;
 
 @Service
 public class BsIvtuserinfoService {
@@ -22,6 +23,10 @@ public class BsIvtuserinfoService {
 		for(BsInvitecode bic : bics) {
 			setBsIvtuserinfo(bic);
 		}
+	}
+	
+	public BsIvtuserinfo getBsIvtuserinfo(int ivtuserinfoId) {
+		return bsIvtuserinfoDAO.findOne(ivtuserinfoId);
 	}
 	
 }

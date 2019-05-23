@@ -13,7 +13,7 @@ import java.util.Date;
  * 
  */
 /**
- * vip充值表
+ * vip充值表  trade_no 流水号
  * @author 吴俭
  *
  */
@@ -54,7 +54,7 @@ public class RsVipplanorder implements Serializable {
 	private Date payTime;
 
 	@Column(name="pay_type")
-	private byte payType;
+	private Byte payType;
 
 	private float price;
 
@@ -63,7 +63,7 @@ public class RsVipplanorder implements Serializable {
 
 	private String remak;
 
-	private byte status;
+	private Byte status;
 
 	private String title;
 
@@ -75,7 +75,7 @@ public class RsVipplanorder implements Serializable {
 	private Date updateTime;
 
 	@Column(name="use_credit")
-	private byte useCredit;
+	private Byte useCredit;
 
 	//bi-directional many-to-one association to BsVipplan
 	@ManyToOne
@@ -88,11 +88,44 @@ public class RsVipplanorder implements Serializable {
 	private BsUserinfo bsUserinfo;
 
 	//bi-directional many-to-one association to RsUsercredit
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name="credit_id")
-	private RsUsercredit rsUsercredit;
+	private RsUsercredit rsUsercredit;*/
+	
+	@Column(name="credit_id")
+	private String creditId;
+	
+	@Transient
+	private String nikeName;
+	
+	@Transient
+	private String vipNo;
 
 	public RsVipplanorder() {
+	}
+
+	public String getCreditId() {
+		return creditId;
+	}
+
+	public void setCreditId(String creditId) {
+		this.creditId = creditId;
+	}
+
+	public String getNikeName() {
+		return nikeName;
+	}
+
+	public void setNikeName(String nikeName) {
+		this.nikeName = nikeName;
+	}
+
+	public String getVipNo() {
+		return vipNo;
+	}
+
+	public void setVipNo(String vipNo) {
+		this.vipNo = vipNo;
 	}
 
 	public String getPlanorderId() {
@@ -159,11 +192,11 @@ public class RsVipplanorder implements Serializable {
 		this.payTime = payTime;
 	}
 
-	public byte getPayType() {
+	public Byte getPayType() {
 		return this.payType;
 	}
 
-	public void setPayType(byte payType) {
+	public void setPayType(Byte payType) {
 		this.payType = payType;
 	}
 
@@ -191,11 +224,11 @@ public class RsVipplanorder implements Serializable {
 		this.remak = remak;
 	}
 
-	public byte getStatus() {
+	public Byte getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(byte status) {
+	public void setStatus(Byte status) {
 		this.status = status;
 	}
 
@@ -223,11 +256,11 @@ public class RsVipplanorder implements Serializable {
 		this.updateTime = updateTime;
 	}
 
-	public byte getUseCredit() {
+	public Byte getUseCredit() {
 		return this.useCredit;
 	}
 
-	public void setUseCredit(byte useCredit) {
+	public void setUseCredit(Byte useCredit) {
 		this.useCredit = useCredit;
 	}
 
@@ -247,12 +280,12 @@ public class RsVipplanorder implements Serializable {
 		this.bsUserinfo = bsUserinfo;
 	}
 
-	public RsUsercredit getRsUsercredit() {
+	/*public RsUsercredit getRsUsercredit() {
 		return this.rsUsercredit;
 	}
 
 	public void setRsUsercredit(RsUsercredit rsUsercredit) {
 		this.rsUsercredit = rsUsercredit;
-	}
+	}*/
 
 }
