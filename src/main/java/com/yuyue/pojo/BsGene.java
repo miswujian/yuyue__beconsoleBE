@@ -29,7 +29,7 @@ public class BsGene implements Serializable {
 	
 	private Integer sort;
 
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
 		name="rs_bookgene"
 		, joinColumns={
@@ -42,7 +42,7 @@ public class BsGene implements Serializable {
 	@JsonBackReference("bsBookinfos")
 	private List<BsBookinfo> bsBookinfos;
 
-	@OneToMany(mappedBy="bsGene")
+	@OneToMany(mappedBy="bsGene" ,fetch=FetchType.LAZY)
 	@JsonBackReference("rsUsergenes")
 	private List<RsUsergene> rsUsergenes;
 

@@ -16,7 +16,6 @@ import java.util.List;
  */
 /**
  * 部门表
- * @author 吴俭
  *
  */
 @Entity
@@ -33,11 +32,11 @@ public class BeDepartment implements Serializable {
 	private String name;
 
 	@JsonBackReference("beUsers")
-	@OneToMany(mappedBy="beDepartment")
+	@OneToMany(mappedBy="beDepartment",fetch=FetchType.LAZY)
 	private List<BeUser> beUsers;
 	
 	@JsonBackReference("beWarehouses")
-	@OneToMany(mappedBy="beDepartment")
+	@OneToMany(mappedBy="beDepartment", cascade = CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<BeWarehouse> beWarehouses;
 
 	public BeDepartment() {

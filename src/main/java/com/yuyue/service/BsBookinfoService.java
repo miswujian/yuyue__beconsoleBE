@@ -11,9 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.yuyue.dao.BsBookinfoDAO;
+import com.yuyue.pojo.Bookinfo;
 import com.yuyue.pojo.BsBookcategory;
 import com.yuyue.pojo.BsBookinfo;
-import com.yuyue.util.Bookinfo;
 import com.yuyue.util.Page4Navigator;
 import com.yuyue.util.StringUtil;
 
@@ -119,6 +119,13 @@ public class BsBookinfoService {
 		if (bbs == null || bbs.isEmpty())
 			return null;
 		return bbs.get(0).getBookName();
+	}
+	
+	public BsBookinfo getByIsbn(String isbn) {
+		List<BsBookinfo> bbs = bsBookinfoDAO.findByIsbn(isbn);
+		if (bbs == null || bbs.isEmpty())
+			return null;
+		return bbs.get(0);
 	}
 
 	public int deletebook(int id) {

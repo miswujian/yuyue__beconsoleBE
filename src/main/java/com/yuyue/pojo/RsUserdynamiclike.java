@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 /**
  * The persistent class for the rs_userdynamiclike database table.
@@ -12,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 /**
  * 鱼群动态点赞表
- * @author 吴俭
  *
  */
 @Entity
@@ -29,11 +30,13 @@ public class RsUserdynamiclike implements Serializable {
 
 	//bi-directional many-to-one association to BsUserdynamic
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="dynamic_id")
 	private BsUserdynamic bsUserdynamic;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
 

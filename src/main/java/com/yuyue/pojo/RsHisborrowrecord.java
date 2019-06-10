@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 
@@ -14,7 +16,6 @@ import java.util.Date;
  */
 /**
  * 历史借阅
- * @author 吴俭
  *
  */
 @Entity
@@ -88,16 +89,19 @@ public class RsHisborrowrecord implements Serializable {
 
 	//bi-directional many-to-one association to BsBookinstore
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="book_id")
 	private BsBookinstore bsBookinstore;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
 
 	//bi-directional many-to-one association to BsBookinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="bookinfo_id")
 	private BsBookinfo bsBookinfo;
 	

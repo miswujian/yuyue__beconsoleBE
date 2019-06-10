@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 文件上传相关属性
- * @author 吴俭
  *
  */
 @Component

@@ -5,6 +5,9 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 
@@ -14,7 +17,6 @@ import java.util.List;
  */
 /**
  * 书柜信息表
- * @author 吴俭
  *
  */
 @Entity
@@ -57,30 +59,43 @@ public class BsBookcaseinfo implements Serializable {
 	
 	private byte status;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="warehouse_id")
 	private BeWarehouse beWarehouse;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="yw_id")
-	@JsonBackReference("beUser")
 	private BeUser beUser;
 	
+	@OneToMany(mappedBy="bsBookcaseinfo" ,fetch=FetchType.LAZY)
+	@JsonBackReference("rsUserwarehouses")
+	private List<RsUserwarehouse> rsUserwarehouses;
+	
 	@Transient
-	private String ywName;
-
+	private User user;
+	
 	@Transient
 	private List<BsBookcellinfo> bsBookcellinfos;
 
 	public BsBookcaseinfo() {
 	}
 
-	public String getYwName() {
-		return ywName;
+	public User getUser() {
+		return user;
 	}
 
-	public void setYwName(String ywName) {
-		this.ywName = ywName;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<RsUserwarehouse> getRsUserwarehouses() {
+		return rsUserwarehouses;
+	}
+
+	public void setRsUserwarehouses(List<RsUserwarehouse> rsUserwarehouses) {
+		this.rsUserwarehouses = rsUserwarehouses;
 	}
 
 	public byte getStatus() {

@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +17,6 @@ import java.util.List;
  */
 /**
  * 图书信息表
- * @author 吴俭
  *
  */
 @Entity
@@ -92,8 +93,9 @@ public class BsBookinfo implements Serializable {
 
 	private float weight;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "category_id")
+	@ApiModelProperty(hidden = true)
 	@JsonBackReference(value = "bsBookcategory")
 	private BsBookcategory bsBookcategory;
 	
@@ -101,14 +103,15 @@ public class BsBookinfo implements Serializable {
 	private String categoryId;
 
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name = "pub_id")
 	private BsPublishinfo bsPublishinfo;
 
-	@OneToMany(mappedBy = "bsBookinfo")
+	@OneToMany(mappedBy = "bsBookinfo" ,fetch=FetchType.LAZY)
 	@JsonBackReference(value = "rsBookincolumns")
 	private List<RsBookincolumn> rsBookincolumns;
 
-	@OneToMany(mappedBy = "bsBookinfo")
+	@OneToMany(mappedBy = "bsBookinfo" ,fetch=FetchType.LAZY)
 	@JsonBackReference(value = "rsBookinsubjects")
 	private List<RsBookinsubject> rsBookinsubjects;
 	

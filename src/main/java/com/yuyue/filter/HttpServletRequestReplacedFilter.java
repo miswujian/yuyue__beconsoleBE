@@ -6,7 +6,6 @@ import java.io.IOException;
 
 /**
  * 过滤器
- * @author 吴俭
  *
  */
 public class HttpServletRequestReplacedFilter implements Filter {

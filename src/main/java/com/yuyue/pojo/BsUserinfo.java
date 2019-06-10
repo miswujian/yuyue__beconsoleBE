@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +18,6 @@ import java.util.List;
  */
 /**
  * 用户信息表
- * @author 吴俭
  *
  */
 @Entity
@@ -114,28 +115,29 @@ public class BsUserinfo implements Serializable {
 	private Integer freezePoint;
 
 	//bi-directional many-to-one association to BsUserdynamic
-	@OneToMany(mappedBy="bsUserinfo")
+	@OneToMany(mappedBy="bsUserinfo" ,cascade = CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<BsUserdynamic> bsUserdynamics;
 
 	//bi-directional many-to-one association to BsUserdynamiccmnt
-	@OneToMany(mappedBy="bsUserinfo")
+	@OneToMany(mappedBy="bsUserinfo" ,cascade = CascadeType.ALL,fetch=FetchType.LAZY)
 	private List<BsUserdynamiccmnt> bsUserdynamiccmnts;
 	
-	@OneToMany(mappedBy="bsUserinfo")
+	@OneToMany(mappedBy="bsUserinfo", fetch=FetchType.LAZY)
 	@JsonBackReference("bsFamilyinfos")
 	private List<BsFamilyinfo> bsFamilyinfos;
 
 	//bi-directional many-to-one association to BsFamilyinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	//@JsonBackReference("bsFamilyinfo")
 	@JoinColumn(name="family_id")
 	private BsFamilyinfo bsFamilyinfo;
 
 	//bi-directional many-to-one association to RsUserdynamiclike
-	@OneToMany(mappedBy="bsUserinfo")
+	@OneToMany(mappedBy="bsUserinfo" ,fetch=FetchType.LAZY)
 	private List<RsUserdynamiclike> rsUserdynamiclikes;
 	
-	@OneToMany(mappedBy="bsUserinfo")
+	@OneToMany(mappedBy="bsUserinfo" ,fetch=FetchType.LAZY)
 	@JsonBackReference("rsUserfines")
 	private List<RsUserfine> rsUserfines;
 	

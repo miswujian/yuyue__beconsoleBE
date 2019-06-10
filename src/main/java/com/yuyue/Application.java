@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.yuyue.filter.HttpServletRequestReplacedFilter;
 
 @SpringBootApplication
 @EnableCaching
+@EnableTransactionManagement
 @SuppressWarnings("all")
 public class Application {
 	

@@ -21,7 +21,7 @@ public interface BsBookcaseinfoDAO extends JpaRepository<BsBookcaseinfo, Integer
 	(ArrayList<Integer> warehouseId, String caseName, String caseCode, String userName, String caseAddress, 
 			ArrayList<Byte> status, Pageable pageable);
 	
-	@Query("from BsBookcaseinfo t where t.beWarehouse = ?1")
+	@Query("from BsBookcaseinfo t where t.beWarehouse.warehouseId = ?1")
 	public List<BsBookcaseinfo> queryByWarehouseId(int warehouseId);
 	
 }

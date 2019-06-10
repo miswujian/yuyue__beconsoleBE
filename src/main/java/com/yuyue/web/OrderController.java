@@ -29,7 +29,6 @@ import io.swagger.annotations.ApiParam;
 /**
  * 还捐审单未实现 除了借阅 其他的高级查询都未实现
  * 订单管理
- * @author 吴俭
  *
  */
 @RestController
@@ -72,6 +71,7 @@ public class OrderController {
 				list(start, size, 5, stage, starttime, endtime, deliverType, expressNo, keyword1, keyword2);
 		rsCurborrowrecordService.setBookinstoreBookNull(rcbs.getContent());
 		rsCurborrowrecordService.setUserinfoNull(rcbs.getContent());
+		rsCurborrowrecordService.setGenesNull(rcbs.getContent());
 		return rcbs;
 	}
 	
@@ -107,9 +107,9 @@ public class OrderController {
 		int flag = rsCurborrowrecordService.updateByStage(borrowId, stage);
 		if(flag == -1)
 			return Result.fail("订单不存在");
-		else if(flag == 0)
-			return Result.fail("更新状态失败");
-		return Result.success();
+		else if(flag == 1)
+			return Result.success();
+		return Result.fail("更新状态失败");
 	}
 	
 	/**
@@ -198,6 +198,7 @@ public class OrderController {
 		//rsHisborrowrecordService.setBookinfoNull(rhbs.getContent());
 		rsHisborrowrecordService.setUserinfoNull(rhbs.getContent());
 		rsHisborrowrecordService.setBookinstoreBookNull(rhbs.getContent());
+		rsHisborrowrecordService.setGenesNull(rhbs.getContent());
 		//bsUserdynamicService.setUserdynamicNull(rhbs.getContent());
 		//bsBookcellinfoService.setBookcellinfoNull(rhbs.getContent());
 		return rhbs;

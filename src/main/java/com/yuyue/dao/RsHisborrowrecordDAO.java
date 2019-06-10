@@ -20,6 +20,14 @@ public interface RsHisborrowrecordDAO extends JpaRepository<RsHisborrowrecord, I
 	(ArrayList<Byte> status,Date starttime, Date endtime, ArrayList<Byte> deliverType,ArrayList<Byte> returnWay, 
 			String nikeName, String vipNo, String bookName, String rfid, Pageable pageable);
 	
+	@Query("from RsHisborrowrecord t where t.status in ?1 and t.startTime between ?2 and ?3 and t.deliverType in ?4 and "
+			+ "(t.returnWay in ?5 or t.returnWay is null) and (t.bsUserinfo.nickname like ?6 or t.bsUserinfo.mobilePhone like ?7 )and "
+			+ "(t.bsBookinfo.bookName like ?8 or t.bsBookinstore.rfid like ?9)")
+	public Page<RsHisborrowrecord> 
+	queryByStatusInAndstartTimeBetweenAndDeliverTypeInAndReturnWayInOrIsNullAndNikeNameLikeOrVipNoLikeAndBookNameLikeOrRfidLike
+	(ArrayList<Byte> status,Date starttime, Date endtime, ArrayList<Byte> deliverType,ArrayList<Byte> returnWay, 
+			String nikeName, String vipNo, String bookName, String rfid, Pageable pageable);
+	
 	public RsHisborrowrecord findByOrderNo(String orderNo);
 	
 }

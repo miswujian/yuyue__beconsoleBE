@@ -34,7 +34,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * 全局管理
- * @author 吴俭
  *
  */
 @RestController

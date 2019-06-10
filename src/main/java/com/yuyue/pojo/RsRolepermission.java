@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 /**
  * The persistent class for the rs_rolepermission database table.
@@ -13,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 /**
  * 角色权限关系表
- * @author 吴俭
  *
  */
 @Entity
@@ -29,12 +30,14 @@ public class RsRolepermission implements Serializable {
 
 	//bi-directional many-to-one association to BePermission
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="pid")
 	private BePermission bePermission;
 
 	//bi-directional many-to-one association to BeRole
 	@ManyToOne
 	@JsonBackReference("beRole")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="rid")
 	private BeRole beRole;
 	

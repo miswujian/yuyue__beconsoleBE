@@ -9,7 +9,6 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-
 import com.yuyue.filter.XssFilter;
 import com.yuyue.interceptor.LoginInterceptor;
 import com.yuyue.properties.FileUploadProperteis;
@@ -17,7 +16,6 @@ import com.yuyue.properties.FileUploadProperteis;
 
 /**
  * 上传 和 访问路径配置 拦截器
- * @author 吴俭
  *
  */
 @Configuration
@@ -35,11 +33,13 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     public FilterRegistrationBean corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
+        //config.addAllowedOrigin("http://localhost:3006/");
+        config.addAllowedOrigin("http://119.3.231.11:3006");
+        config.addAllowedOrigin("http://119.3.231.11:5000");
+        config.addAllowedOrigin("http://localhost:3006");
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
         bean.setOrder(0);//配置CorsFilter优先级

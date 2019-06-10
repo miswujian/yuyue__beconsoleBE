@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 /**
  * The persistent class for the rs_usergene database table.
@@ -24,11 +26,13 @@ public class RsUsergene implements Serializable {
 
 	//bi-directional many-to-one association to BsGene
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="gene_id")
 	private BsGene bsGene;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
 

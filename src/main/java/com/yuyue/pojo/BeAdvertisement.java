@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 
@@ -43,6 +45,7 @@ public class BeAdvertisement implements Serializable {
 
 	//bi-directional many-to-one association to BsBookcaseinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="case_id")
 	private BsBookcaseinfo bsBookcaseinfo;
 	

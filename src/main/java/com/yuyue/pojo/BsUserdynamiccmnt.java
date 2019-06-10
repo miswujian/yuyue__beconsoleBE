@@ -10,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 /**
  * The persistent class for the bs_userdynamiccmnt database table.
@@ -17,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 /**
  * 鱼群动态评论表
- * @author 吴俭
  *
  */
 @Entity
@@ -37,12 +38,14 @@ public class BsUserdynamiccmnt implements Serializable {
 	//bi-directional many-to-one association to BsUserdynamic
 	@ManyToOne
 	@JsonBackReference("bsUserdynamic")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="dynamic_id")
 	private BsUserdynamic bsUserdynamic;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
 	@JsonBackReference("bsUserinfo")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
 	

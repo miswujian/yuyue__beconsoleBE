@@ -15,7 +15,6 @@ import java.util.List;
  */
 /**
  * 权限表
- * @author 吴俭
  *
  */
 @Entity
@@ -35,7 +34,7 @@ public class BePermission implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to RsRolepermission
-	@OneToMany(mappedBy="bePermission")
+	@OneToMany(mappedBy="bePermission" ,fetch=FetchType.LAZY)
 	@JsonBackReference("rsRolepermissions")
 	private List<RsRolepermission> rsRolepermissions;
 

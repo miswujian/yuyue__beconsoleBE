@@ -9,6 +9,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * The persistent class for the be_user database table.
@@ -16,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 /**
  * 用户表
- * @author 吴俭
  *
  */
 @Entity
@@ -43,45 +43,110 @@ public class BeUser implements Serializable {
 	
 	private String password;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="auth")
 	@JsonBackReference("beRole")
+	@ApiModelProperty(hidden = true)
 	private BeRole beRole;
 	
 	@ManyToOne
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="departmentid")
 	private BeDepartment beDepartment;
 
 	@ManyToOne
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="institutionid")
 	private BeInstitution beInstitution;
 	
-	@OneToMany(mappedBy="beUser")
+	@OneToMany(mappedBy="beUser",fetch=FetchType.LAZY)
 	@JsonBackReference(value = "bsBookcaseinfos")
 	private List<BsBookcaseinfo> bsBookcaseinfos;
+	
+	@OneToMany(mappedBy="beUser" ,fetch=FetchType.LAZY)
+	@JsonBackReference("rsUserwarehouses")
+	private List<RsUserwarehouse> rsUserwarehouses;
+	
+	@OneToMany(mappedBy="beUser1",fetch=FetchType.LAZY)
+	@JsonBackReference("rsStoragerecords1")
+	private List<RsStoragerecord> rsStoragerecords1;
+
+	//bi-directional many-to-one association to RsStoragerecord
+	@OneToMany(mappedBy="beUser2",fetch=FetchType.LAZY)
+	@JsonBackReference("rsStoragerecords2")
+	private List<RsStoragerecord> rsStoragerecords2;
+	
+	/*@OneToMany(mappedBy="beUser1")
+	@JsonBackReference("rsTransferrecords1")
+	private List<RsTransferrecord> rsTransferrecords1;
+
+	//bi-directional many-to-one association to RsTransferrecord
+	@OneToMany(mappedBy="beUser2")
+	@JsonBackReference("rsTransferrecords2")
+	private List<RsTransferrecord> rsTransferrecords2;*/
 	
 	@Transient
 	private String role;
 	
-	@Transient
-	private Integer roleId;
+	/*@Transient
+	private Integer roleId;*/
 	
 	@Transient
 	private List<String> permissions;
 	
 	@Transient
-	private int roleType;
+	private Integer roleType;
 
-	public Integer getRoleId() {
+	/*public Integer getRoleId() {
 		return roleId;
 	}
 
 	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
-	}
+	}*/
 
 	public List<BsBookcaseinfo> getBsBookcaseinfos() {
 		return bsBookcaseinfos;
+	}
+
+	/*public List<RsTransferrecord> getRsTransferrecords1() {
+		return rsTransferrecords1;
+	}
+
+	public void setRsTransferrecords1(List<RsTransferrecord> rsTransferrecords1) {
+		this.rsTransferrecords1 = rsTransferrecords1;
+	}
+
+	public List<RsTransferrecord> getRsTransferrecords2() {
+		return rsTransferrecords2;
+	}
+
+	public void setRsTransferrecords2(List<RsTransferrecord> rsTransferrecords2) {
+		this.rsTransferrecords2 = rsTransferrecords2;
+	}*/
+
+	public List<RsStoragerecord> getRsStoragerecords1() {
+		return rsStoragerecords1;
+	}
+
+	public void setRsStoragerecords1(List<RsStoragerecord> rsStoragerecords1) {
+		this.rsStoragerecords1 = rsStoragerecords1;
+	}
+
+	public List<RsStoragerecord> getRsStoragerecords2() {
+		return rsStoragerecords2;
+	}
+
+	public void setRsStoragerecords2(List<RsStoragerecord> rsStoragerecords2) {
+		this.rsStoragerecords2 = rsStoragerecords2;
+	}
+
+	public List<RsUserwarehouse> getRsUserwarehouses() {
+		return rsUserwarehouses;
+	}
+
+	public void setRsUserwarehouses(List<RsUserwarehouse> rsUserwarehouses) {
+		this.rsUserwarehouses = rsUserwarehouses;
 	}
 
 	public void setBsBookcaseinfos(List<BsBookcaseinfo> bsBookcaseinfos) {
@@ -96,16 +161,12 @@ public class BeUser implements Serializable {
 		this.registrationtime = registrationtime;
 	}
 
-	public void setRoleType(int roleType) {
+	public void setRoleType(Integer roleType) {
 		this.roleType = roleType;
 	}
 
 	public Integer getRoleType() {
 		return roleType;
-	}
-
-	public void setRoleType(Integer roleType) {
-		this.roleType = roleType;
 	}
 
 	public byte getStatus() {

@@ -40,7 +40,6 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * 商品管理操作部分还没实现  书籍新增和修改的图片上传还没写  查询已经实现
  * 书籍管理
- * @author 吴俭
  *
  */
 @RestController
@@ -114,9 +113,9 @@ public class BookController {
 		if(bbi == null)
 			return Result.fail("未获取到输入值");
 		int flag = bsBookinfoService.addbook(bbi);
-		if(flag <=0)
-			return Result.fail("添加失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("添加失败");
 	}
 	
 	/**
@@ -134,9 +133,9 @@ public class BookController {
 		BsBookinfo bsBookinfo = bsBookinfoService.getBook(bbi.getBookinfoId());
 		UpdateUtil.copyNullProperties(bsBookinfo, bbi);
 		int flag = bsBookinfoService.updateBook(bbi);
-		if(flag <=0)
-			return Result.fail("更新失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("更新失败");
 	}
 	
 	/**
@@ -151,9 +150,9 @@ public class BookController {
 		if(bookinfoId <= 0)
 			return Result.fail("请输入正确的bookinfoId");
 		int flag = bsBookinfoService.deletebook(bookinfoId);
-		if(flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 	
 	@GetMapping("/genes")
@@ -170,18 +169,18 @@ public class BookController {
 	@ApiOperation(value="增加基因", notes="增加基因")
 	public Object addGene(@RequestBody BsGene bsGene) {
 		int flag = bsGeneService.add(bsGene);
-		if(flag<=0)
-			return Result.fail("增加失败");
-		return Result.success();
+		if(flag>0)
+			return Result.success();
+		return Result.fail("增加失败");
 	}
 	
 	@PutMapping("/genes")
 	@ApiOperation(value="更新基因", notes="更新基因")
 	public Object updateGene(@RequestBody BsGene bsGene) {
 		int flag = bsGeneService.update(bsGene);
-		if(flag<=0)
-			return Result.fail("更新失败");
-		return Result.success();
+		if(flag>0)
+			return Result.success();
+		return Result.fail("更新失败");
 	}
 	
 	@GetMapping("/genes/{geneId}")
@@ -194,9 +193,9 @@ public class BookController {
 	@ApiOperation(value="删除基因",notes="删除基因")
 	public Object deleteGene(int geneId) {
 		int flag = bsGeneService.delete(geneId);
-		if(flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 	
 	/**
@@ -206,7 +205,8 @@ public class BookController {
 	 * @return
 	 */
 	@GetMapping("/publishinfos")
-	@ApiOperation(value="出版社维护信息查询", notes="出版社维护信息查询")
+	//@ApiOperation(value="出版社维护信息查询", notes="出版社维护信息查询")
+	@ApiIgnore
 	public Page4Navigator<BsPublishinfo> listPublishinfo(
 			@ApiParam(name="start",required=false)@RequestParam(value = "start",defaultValue = "0") int start,
 			@ApiParam(name="size",required=false)@RequestParam(value="size",defaultValue="10")int size,
@@ -252,9 +252,9 @@ public class BookController {
 		if(bpi == null)
 			return Result.fail("未获取到输入值");
 		int flag = bsPublishinfoService.addPublishinfo(bpi);
-		if(flag <=0)
-			return Result.fail("添加失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("添加失败");
 	}
 	
 	/**
@@ -272,9 +272,9 @@ public class BookController {
 		BsPublishinfo bsPublishinfo = bsPublishinfoService.getPublishinfo(bpi.getPubId());
 		UpdateUtil.copyNullProperties(bsPublishinfo, bpi);
 		int flag = bsPublishinfoService.updatePublishinfo(bpi);
-		if(flag <=0)
-			return Result.fail("更新失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("更新失败");
 	}
 	
 	/**
@@ -288,9 +288,9 @@ public class BookController {
 		if(pubId <= 0)
 			return Result.fail("请输入正确的pubId");
 		int flag = bsPublishinfoService.deletePublishinfo(pubId);
-		if(flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 	
 	/**
@@ -317,9 +317,9 @@ public class BookController {
 	public Object changeStatus(@PathVariable(name = "bookId")BigInteger bookId,
 			@PathVariable(name = "status")String status) {
 		int flag = bsBookinstoreService.changeStatus(bookId, status);
-		if(flag == 0)
-			return Result.fail("操作失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("操作失败");
 	}
 	
 	/**

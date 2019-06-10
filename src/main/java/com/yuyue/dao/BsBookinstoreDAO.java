@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.yuyue.pojo.BsBookcellinfo;
 import com.yuyue.pojo.BsBookinfo;
 import com.yuyue.pojo.BsBookinstore;
 
@@ -34,5 +35,16 @@ public interface BsBookinstoreDAO extends JpaRepository<BsBookinstore, BigIntege
 	public Page<BsBookinstore> queryByCategoryIdLikeAndStatusInAndPubIdInAndBookNameLikeOrIsbnLikeorAuthorLike
 	(String categoryId, ArrayList<Byte> Status, ArrayList<Integer> pubId, 
 			String bookName, String isbn, String author, Pageable pageable);
-
+	
+	public Page<BsBookinstore> findByBsBookcellinfoIn(ArrayList<BsBookcellinfo> bbcs, Pageable pageable);
+	
+	public List<BsBookinstore> findByBsBookcellinfo(BsBookcellinfo bbc);
+	
+	public List<BsBookinstore> findByCode(String code);
+	
+	@Query("from BsBookinstore t where (t.bsBookcellinfo.cellId in ?1)")
+	public Page<BsBookinstore> findByCellIdIn(List<Integer> cellIds, Pageable pageable);
+	
+	public int countByRfid(String rfid);
+	
 }

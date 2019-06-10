@@ -14,7 +14,6 @@ import java.util.List;
  */
 /**
  * 图书专栏表
- * @author 吴俭
  *
  */
 @Entity
@@ -43,7 +42,7 @@ public class BsBookcolumn implements Serializable {
 	private byte style;
 
 	//bi-directional many-to-one association to RsBookincolumn
-	@OneToMany(mappedBy="bsBookcolumn")
+	@OneToMany(mappedBy="bsBookcolumn" ,fetch=FetchType.LAZY)
 	private List<RsBookincolumn> rsBookincolumns;
 
 	public BsBookcolumn() {

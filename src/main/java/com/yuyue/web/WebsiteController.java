@@ -50,7 +50,6 @@ import springfox.documentation.annotations.ApiIgnore;
 /**
  * 网站管理 广告管理还差测试
  * 
- * @author 吴俭
  *
  */
 @RestController
@@ -58,7 +57,8 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value="网站管理接口", tags="网站管理接口")
 public class WebsiteController {
 
-	private String path = "119.3.231.11:8080/yuyue/img/";
+	private String path = "www.miswujian.top:8080/yuyue/img/";
+	//private String path = "119.3.231.11:8080/yuyue/img/";
 	//private String path = "localhost:8080/yuyue/img/";
 	@Autowired
 	private BsBooksubjectService bsBooksubjectService;
@@ -116,9 +116,9 @@ public class WebsiteController {
 		bsBooksubject.setCreateTime(new Date());
 		bsBooksubject.setLimitNum(5);
 		int flag = bsBooksubjectService.addSubject(bsBooksubject);
-		if (flag <= 0)
-			return Result.fail("增加失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("增加失败");
 	}
 
 	/**
@@ -141,9 +141,9 @@ public class WebsiteController {
 		UpdateUtil.copyNullProperties(bbs, bsBooksubject);
 		bsBooksubject.setUpdateTime(new Date());
 		int flag = bsBooksubjectService.updateSubject(bsBooksubject);
-		if (flag <= 0)
-			return Result.fail("更新失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("更新失败");
 	}
 
 	/**
@@ -156,9 +156,9 @@ public class WebsiteController {
 	@ApiOperation(value="删除专题", notes="通过url的booksubjectId来删除专题")
 	public Object deleteSubject(@PathVariable("booksubjectId")int booksubjectId) {
 		int flag = bsBooksubjectService.deleteSubject(booksubjectId);
-		if (flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 
 	/**
@@ -190,9 +190,9 @@ public class WebsiteController {
 	@ApiOperation(value="删除专题与书籍的关系", notes="通过url的bookinsubjectId来删除专题与书籍的关系")
 	public Object deleteBookinsubject(@PathVariable("bookinsubjectId")int bookinsubjectId) throws IOException {
 		int flag = rsBookinsubjectService.delete(bookinsubjectId);
-		if (flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 
 	/**
@@ -244,9 +244,9 @@ public class WebsiteController {
 		rsBookinsubject.setBsBookinfo(bsBookinfo);
 		rsBookinsubject.setBsBooksubject(bsBooksubject);
 		int flag = rsBookinsubjectService.addBookinsubject(rsBookinsubject);
-		if (flag <= 0)
-			return Result.fail("增加失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("增加失败");
 	}
 
 	/**
@@ -292,9 +292,9 @@ public class WebsiteController {
 			BsPicture bsPicture) throws IOException {
 		saveOrUpdateOrDeleteImageFile(image, bsPicture, 1);
 		int flag = bsPictureService.add(bsPicture);
-		if (flag <= 0)
-			return Result.fail("增加失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("增加失败");
 	}
 	
 	/**
@@ -309,9 +309,9 @@ public class WebsiteController {
 		BsPicture bp = bsPictureService.get(picId);
 		saveOrUpdateOrDeleteImageFile(null, bp, 3);
 		int flag = bsPictureService.delete(picId);
-		if (flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 
 	/**
@@ -329,9 +329,9 @@ public class WebsiteController {
 			return Result.fail("picId不能为空");
 		saveOrUpdateOrDeleteImageFile(image, bsPicture, 2);
 		int flag = bsPictureService.update(bsPicture);
-		if (flag <= 0)
-			return Result.fail("更新失败");
-		return Result.success();
+		if (flag > 0)
+			return Result.success();
+		return Result.fail("更新失败");
 	}
 	
 	/**
@@ -343,9 +343,9 @@ public class WebsiteController {
 	@ApiOperation(value = "更换banner状态", notes="更换banner状态")
 	public Object changeStatus(@PathVariable("picId") int picId) {
 		int flag = bsPictureService.changeStatus(picId);
-		if(flag <= 0)
-			return Result.fail("更换状态失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("更换状态失败");
 	}
 
 	/**
@@ -514,9 +514,9 @@ public class WebsiteController {
 			return Result.fail("未获取到输入值");
 		saveOrUpdateOrDeleteImageFile2(image, beAdvertisement, 1);
 		int flag = beAdvertisementService.add(beAdvertisement);
-		if(flag<=0)
-			return Result.fail("增加广告失败");
-		return Result.success();
+		if(flag>0)
+			return Result.success();
+		return Result.fail("增加广告失败");
 	}
 	
 	/**
@@ -535,9 +535,9 @@ public class WebsiteController {
 			return Result.fail("未获取到输入值");
 		saveOrUpdateOrDeleteImageFile2(image, beAdvertisement, 2);
 		int flag = beAdvertisementService.update(beAdvertisement);
-		if(flag<=0)
-			return Result.fail("更新广告失败");
-		return Result.success();
+		if(flag>0)
+			return Result.success();
+		return Result.fail("更新广告失败");
 	}
 	
 	/**
@@ -554,18 +554,18 @@ public class WebsiteController {
 		BeAdvertisement beAdvertisement = beAdvertisementService.get(advId);
 		saveOrUpdateOrDeleteImageFile2(null, beAdvertisement, 3);
 		int flag = beAdvertisementService.delete(advId);
-		if(flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 	
 	@PostMapping("/advertisements/{advId}")
 	@ApiIgnore
 	public Object changeAdvStatus(@PathVariable("advId") int advId) {
 		int flag = beAdvertisementService.changeStatus(advId);
-		if(flag <= 0)
-			return Result.fail("更换状态失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("更换状态失败");
 	}
 	
 	@GetMapping("/bookcaseinfo")

@@ -60,7 +60,7 @@ public class BsGeneService {
 		Sort ssort = new Sort(Sort.Direction.ASC,"sort");
 		Sort sort = new Sort(Sort.Direction.DESC,"geneId").and(ssort);
 		Pageable pageable = new PageRequest(start, size, sort);
-		Page<BsGene> pageFromJPA = bsGeneDAO.findByName("%" + keyword + "%", pageable);
+		Page<BsGene> pageFromJPA = bsGeneDAO.findByNameLike("%" + keyword + "%", pageable);
 		return new Page4Navigator<>(pageFromJPA, navigatePages);
 	}
 	

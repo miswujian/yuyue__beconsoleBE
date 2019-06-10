@@ -28,7 +28,6 @@ import io.swagger.annotations.ApiParam;
 
 /**
  * 鱼群管理
- * @author 吴俭
  *
  */
 @RestController
@@ -120,11 +119,11 @@ public class ShoalController {
 	public Object deleteUserdynamic(@RequestBody Lists lists) {
 		int size = lists.getDynamicIds().size();
 		int flag = bsUserdynamicService.deletemore(lists.getDynamicIds());
-		if(flag <= 0)
-			return Result.fail("全部删除失败");
-		if(flag != size)
+		if(flag != size&&flag>0)
 			return Result.fail("删除失败"+(size-flag)+"条");
-		return Result.success();
+		if(flag == size)
+			return Result.success();
+		return Result.fail("全部删除失败");
 	}
 	
 	/**
@@ -137,11 +136,11 @@ public class ShoalController {
 	public Object deleteUserdynamiccmnt(@RequestBody Lists lists) {
 		int size = lists.getCommentIds().size();
 		int flag = bsUserdynamiccmntService.deletemore(lists.getCommentIds());
-		if(flag <= 0)
-			return Result.fail("全部删除失败");
-		if(flag != size)
+		if(flag != size&&flag>0)
 			return Result.fail("删除失败"+(size-flag)+"条");
-		return Result.success();
+		if(flag == size)
+			return Result.success();
+		return Result.fail("全部删除失败");
 	}
 	
 	/**
@@ -245,9 +244,9 @@ public class ShoalController {
 		if(words == null)
 			return Result.fail("请输入增加的词");
 		int flag = beSensitiveService.addSensitive(words);
-		if(flag <= 0)
-			return Result.fail("添加失败");
-		return Result.success(flag);
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("添加失败");
 	}
 	
 	/**
@@ -259,9 +258,9 @@ public class ShoalController {
 	@ApiOperation(value="删除敏感词库", notes="通过url的id来删除敏感词库")
 	public Object deleteSensitive(@PathVariable("id")int id) {
 		int flag = beSensitiveService.deleteSensitive(id);
-		if(flag <= 0)
-			return Result.fail("删除失败");
-		return Result.success();
+		if(flag > 0)
+			return Result.success();
+		return Result.fail("删除失败");
 	}
 	
 }

@@ -9,7 +9,6 @@ import java.nio.charset.Charset;
 
 /**
  * 用于读取Body (解决 @RequestBody IO错误)
- * @author 吴俭
  *
  */
 public class HttpHelper {

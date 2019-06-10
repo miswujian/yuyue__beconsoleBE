@@ -2,12 +2,15 @@ package com.yuyue.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.yuyue.pojo.BsBookinstore;
 import com.yuyue.pojo.RsCurborrowrecord;
 
 public interface RsCurborrowrecordDAO extends JpaRepository<RsCurborrowrecord, Integer>{
@@ -57,5 +60,7 @@ public interface RsCurborrowrecordDAO extends JpaRepository<RsCurborrowrecord, I
 	
 	@Query("from RsCurborrowrecord t where t.stage = 6 and t.bsBookinstore.rfid = ?1")
 	public RsCurborrowrecord findByStageIsAndRfidIs(String rfid);
+	
+	public List<RsCurborrowrecord> findByBsBookinstore(BsBookinstore bsBookinstore, Sort sort);
 	
 }

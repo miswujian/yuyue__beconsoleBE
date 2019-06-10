@@ -10,7 +10,6 @@ import java.util.Set;
 /**
  * 
  * 提交实体对象中的null赋值
- * @author 吴俭
  *
  */
 public class UpdateUtil {

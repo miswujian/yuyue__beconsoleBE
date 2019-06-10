@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 import java.util.List;
@@ -56,33 +57,82 @@ public class BeWarehouse implements Serializable {
 
 	@Column(name="warehouse_name")
 	private String warehouseName;
+	
+	@OneToMany(mappedBy="beWarehouse")
+	private List<BeLocation> beLocations;
 
 	//bi-directional many-to-one association to BeDepartment
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="department_id")
 	private BeDepartment beDepartment;
 	
-	@OneToMany(mappedBy="beWarehouse")
+	@OneToMany(mappedBy="beWarehouse" ,fetch=FetchType.LAZY)
 	@JsonBackReference("bsBookcaseinfos")
 	private List<BsBookcaseinfo> bsBookcaseinfos;
 	
-	@OneToMany(mappedBy="beWarehouse")
-	@JsonBackReference("bsBookinstores")
-	private List<BsBookinstore> bsBookinstores;
+	@OneToMany(mappedBy="beWarehouse" ,fetch=FetchType.LAZY)
+	@JsonBackReference("rsUserwarehouses")
+	private List<RsUserwarehouse> rsUserwarehouses;
+	
+	@OneToMany(mappedBy="beWarehouse" ,fetch=FetchType.LAZY)
+	@JsonBackReference("rsStoragerecords")
+	private List<RsStoragerecord> rsStoragerecords;
+	
+	/*@OneToMany(mappedBy="beWarehouse1")
+	@JsonBackReference("rsTransferrecords1")
+	private List<RsTransferrecord> rsTransferrecords1;
+
+	//bi-directional many-to-one association to RsTransferrecord
+	@OneToMany(mappedBy="beWarehouse2")
+	@JsonBackReference("rsTransferrecords2")
+	private List<RsTransferrecord> rsTransferrecords2;*/
 	
 	@Transient
 	private Integer departmentId;
+	
+	/*public List<RsTransferrecord> getRsTransferrecords1() {
+		return rsTransferrecords1;
+	}
+
+	public void setRsTransferrecords1(List<RsTransferrecord> rsTransferrecords1) {
+		this.rsTransferrecords1 = rsTransferrecords1;
+	}
+
+	public List<RsTransferrecord> getRsTransferrecords2() {
+		return rsTransferrecords2;
+	}
+
+	public void setRsTransferrecords2(List<RsTransferrecord> rsTransferrecords2) {
+		this.rsTransferrecords2 = rsTransferrecords2;
+	}*/
+
+	public List<RsStoragerecord> getRsStoragerecords() {
+		return rsStoragerecords;
+	}
+
+	public void setRsStoragerecords(List<RsStoragerecord> rsStoragerecords) {
+		this.rsStoragerecords = rsStoragerecords;
+	}
+
+	public List<RsUserwarehouse> getRsUserwarehouses() {
+		return rsUserwarehouses;
+	}
+
+	public void setRsUserwarehouses(List<RsUserwarehouse> rsUserwarehouses) {
+		this.rsUserwarehouses = rsUserwarehouses;
+	}
+
+	public List<BeLocation> getBeLocations() {
+		return beLocations;
+	}
+
+	public void setBeLocations(List<BeLocation> beLocations) {
+		this.beLocations = beLocations;
+	}
 
 	public Date getCreateTime() {
 		return createTime;
-	}
-
-	public List<BsBookinstore> getBsBookinstores() {
-		return bsBookinstores;
-	}
-
-	public void setBsBookinstores(List<BsBookinstore> bsBookinstores) {
-		this.bsBookinstores = bsBookinstores;
 	}
 
 	public List<BsBookcaseinfo> getBsBookcaseinfos() {

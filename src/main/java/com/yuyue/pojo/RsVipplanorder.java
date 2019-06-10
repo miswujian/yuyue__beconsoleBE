@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 
@@ -14,7 +16,6 @@ import java.util.Date;
  */
 /**
  * vip充值表  trade_no 流水号
- * @author 吴俭
  *
  */
 @Entity
@@ -79,11 +80,13 @@ public class RsVipplanorder implements Serializable {
 
 	//bi-directional many-to-one association to BsVipplan
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="plan_id")
 	private BsVipplan bsVipplan;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="userId")
 	private BsUserinfo bsUserinfo;
 

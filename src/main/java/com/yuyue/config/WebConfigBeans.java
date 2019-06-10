@@ -12,7 +12,6 @@ import com.yuyue.util.StringToDateConverter;
 
 /**
  * 适配器 配置类
- * @author 吴俭
  *
  */
 @Configuration

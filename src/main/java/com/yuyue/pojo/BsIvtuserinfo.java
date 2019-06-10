@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 
@@ -15,7 +17,6 @@ import java.util.Date;
  */
 /**
  * 邀请用户表
- * @author 吴俭
  *
  */
 @Entity
@@ -45,6 +46,7 @@ public class BsIvtuserinfo implements Serializable {
 	//bi-directional many-to-one association to BsInvitecode
 	@ManyToOne
 	@JsonBackReference("bsInvitecode")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="ivtcode_id")
 	private BsInvitecode bsInvitecode;
 

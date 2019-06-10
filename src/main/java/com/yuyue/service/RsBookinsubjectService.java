@@ -16,7 +16,9 @@ public class RsBookinsubjectService{
 	private RsBookinsubjectDAO rsBookinsubjectDAO;
 	
 	public List<RsBookinsubject> getByBsBooksubject(BsBooksubject bsBooksubject){
-		return rsBookinsubjectDAO.findByBsBooksubject(bsBooksubject);
+		List<RsBookinsubject> rbis = rsBookinsubjectDAO.findByBsBooksubject(bsBooksubject);
+		setGenesNull(rbis);
+		return rbis;
 	}
 
 	public int delete(int bookinsubjectId) {
@@ -35,7 +37,16 @@ public class RsBookinsubjectService{
 		} catch (Exception e) {
 			return 0;
 		}
-		
+	}
+	
+	public void setGenesNull(RsBookinsubject rbi) {
+		rbi.getBsBookinfo().setBsGenes(null);
+	}
+	
+	public void setGenesNull(List<RsBookinsubject> rbis) {
+		for(RsBookinsubject rbi : rbis) {
+			setGenesNull(rbi);
+		}
 	}
 	
 }

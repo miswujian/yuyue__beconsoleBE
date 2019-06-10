@@ -15,7 +15,6 @@ import java.util.List;
  */
 /**
  * 出版社信息表
- * @author 吴俭
  *
  */
 @Entity
@@ -33,7 +32,7 @@ public class BsPublishinfo implements Serializable {
 	@Column(name="pub_name")
 	private String pubName;
 
-	@OneToMany(mappedBy="bsPublishinfo")
+	@OneToMany(mappedBy="bsPublishinfo" ,fetch=FetchType.LAZY)
 	@JsonBackReference(value = "bsBookinfos")
 	private List<BsBookinfo> bsBookinfos;
 

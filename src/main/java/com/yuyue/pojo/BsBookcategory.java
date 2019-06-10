@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.yuyue.util.Bookinfo;
 
 
 /**
@@ -15,7 +15,6 @@ import com.yuyue.util.Bookinfo;
  */
 /**
  * 书籍分类信息表
- * @author 吴俭
  *
  */
 @Entity
@@ -40,6 +39,8 @@ public class BsBookcategory implements Serializable {
 	private List<BsBookcategory> bsBookcategorys;
 	
 	@Transient
+	@JsonBackReference("bsBookinfos")
+	@OneToMany(mappedBy="bsBookcategory")
 	private List<Bookinfo> bsBookinfos;
 
 	public BsBookcategory() {

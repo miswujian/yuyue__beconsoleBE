@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * 防止流丢失
- * @author 吴俭
  *
  */
 public class RequestReaderHttpServletRequestWrapper extends HttpServletRequestWrapper{

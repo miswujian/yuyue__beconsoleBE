@@ -3,8 +3,9 @@ package com.yuyue.pojo;
 import java.io.Serializable;
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
@@ -15,7 +16,6 @@ import java.util.List;
  */
 /**
  * 机构表
- * @author 吴俭
  *
  */
 @Entity
@@ -34,15 +34,26 @@ public class BeInstitution implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to BeInstitution
-	@ManyToOne
-	@JsonBackReference("beInstitution")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="parentid")
 	private BeInstitution beInstitution;
 	
 	@Transient
 	private List<BeInstitution> beInstitutions;
+	
+	@Transient
+	private List<User> users;
 
 	public BeInstitution() {
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	public Integer getId() {

@@ -18,7 +18,6 @@ import javax.imageio.ImageIO;
   
 /**
  * 
- * @author 吴俭
  *
  */
 public class ImageUtil {

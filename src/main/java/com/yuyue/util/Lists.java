@@ -13,6 +13,36 @@ public class Lists implements Serializable{
 	List<String> dynamicIds;
 
 	List<String> commentIds;
+	
+	List<Integer> addCaseIds;
+	
+	List<Integer> deleteCaseIds;
+	
+	int userId;
+
+	public List<Integer> getAddCaseIds() {
+		return addCaseIds;
+	}
+
+	public void setAddCaseIds(List<Integer> addCaseIds) {
+		this.addCaseIds = addCaseIds;
+	}
+
+	public List<Integer> getDeleteCaseIds() {
+		return deleteCaseIds;
+	}
+
+	public void setDeleteCaseIds(List<Integer> deleteCaseIds) {
+		this.deleteCaseIds = deleteCaseIds;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
 	public List<String> getDynamicIds() {
 		return dynamicIds;

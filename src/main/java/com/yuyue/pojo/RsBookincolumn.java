@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 /**
  * The persistent class for the rs_bookincolumn database table.
@@ -12,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 /**
  * 专栏关系表
- * @author 吴俭
  *
  */
 @Entity
@@ -29,11 +30,13 @@ public class RsBookincolumn implements Serializable {
 
 	//bi-directional many-to-one association to BsBookcolumn
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="column_id")
 	private BsBookcolumn bsBookcolumn;
 
 	//bi-directional many-to-one association to BsBookinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="bookinfo_id")
 	private BsBookinfo bsBookinfo;
 

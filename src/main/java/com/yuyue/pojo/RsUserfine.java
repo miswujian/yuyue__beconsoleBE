@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 
@@ -63,6 +65,7 @@ public class RsUserfine implements Serializable {
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@ApiModelProperty(hidden = true)
 	@JsonBackReference("bsUserinfo")
 	private BsUserinfo bsUserinfo;
 

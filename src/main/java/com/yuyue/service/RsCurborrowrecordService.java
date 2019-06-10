@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.yuyue.dao.RsCurborrowrecordDAO;
+import com.yuyue.pojo.BsBookinstore;
 import com.yuyue.pojo.RsCurborrowrecord;
 import com.yuyue.util.Page4Navigator;
 import com.yuyue.util.StringUtil;
@@ -24,6 +25,14 @@ public class RsCurborrowrecordService {
 	
 	@Autowired
 	private RsUserfineService rsUserfineService;
+	
+	public RsCurborrowrecord getRsCurborrowrecord(BsBookinstore bsBookinstore) {
+		Sort sort = new Sort(Sort.Direction.DESC,"createTime");
+		List<RsCurborrowrecord> rcbs = rsCurborrowrecordDAO.findByBsBookinstore(bsBookinstore, sort);
+		if(rcbs==null||rcbs.isEmpty())
+			return null;
+		return rcbs.get(0);
+	}
 
 	public Page4Navigator<RsCurborrowrecord> list(int start, int size, int navigatePages) {
 		Sort sort = new Sort(Sort.Direction.DESC, "borrowId");
@@ -215,6 +224,15 @@ public class RsCurborrowrecordService {
 	public void setBookinstoreBookNull(List<RsCurborrowrecord> rcbs) {
 		for(RsCurborrowrecord rcb : rcbs)
 			setBookinstoreBookNull(rcb);
+	}
+	
+	public void setGenesNull(RsCurborrowrecord rcb) {
+		rcb.getBsBookinfo().setBsGenes(null);
+	}
+	
+	public void setGenesNull(List<RsCurborrowrecord> rcbs) {
+		for(RsCurborrowrecord rcb : rcbs)
+			setGenesNull(rcb);
 	}
 
 }

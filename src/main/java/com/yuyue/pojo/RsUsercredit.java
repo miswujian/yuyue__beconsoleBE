@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 
@@ -14,7 +16,6 @@ import java.util.Date;
  */
 /**
  * 用户积分表
- * @author 吴俭
  *
  */
 @Entity
@@ -49,6 +50,7 @@ public class RsUsercredit implements Serializable {
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
 

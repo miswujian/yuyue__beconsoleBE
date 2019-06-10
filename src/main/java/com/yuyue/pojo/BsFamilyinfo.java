@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +18,6 @@ import java.util.List;
  */
 /**
  * 用户家庭组表
- * @author 吴俭
  *
  */
 @Entity
@@ -56,13 +57,14 @@ public class BsFamilyinfo implements Serializable {
 	private Date vipStart;
 
 	//bi-directional many-to-one association to BsUserinfo
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JsonBackReference("bsUserinfo")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="master_id")
 	private BsUserinfo bsUserinfo;
 
 	//bi-directional many-to-one association to BsUserinfo
-	@OneToMany(mappedBy="bsFamilyinfo")
+	@OneToMany(mappedBy="bsFamilyinfo" ,fetch=FetchType.LAZY)
 	@JsonBackReference("bsUserinfos")
 	private List<BsUserinfo> bsUserinfos;
 

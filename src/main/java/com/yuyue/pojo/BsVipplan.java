@@ -15,7 +15,6 @@ import java.util.List;
  */
 /**
  * vip套餐表
- * @author 吴俭
  *
  */
 @Entity
@@ -45,7 +44,7 @@ public class BsVipplan implements Serializable {
 	private byte vipType;
 
 	//bi-directional many-to-one association to RsVipplanorder
-	@OneToMany(mappedBy="bsVipplan")
+	@OneToMany(mappedBy="bsVipplan" ,fetch=FetchType.LAZY)
 	@JsonBackReference("rsVipplanorders")
 	private List<RsVipplanorder> rsVipplanorders;
 

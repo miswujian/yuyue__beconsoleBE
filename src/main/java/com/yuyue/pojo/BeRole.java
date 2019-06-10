@@ -15,7 +15,6 @@ import java.util.List;
  */
 /**
  * 角色表
- * @author 吴俭
  *
  */
 @Entity
@@ -35,7 +34,7 @@ public class BeRole implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to BeUser
-	@OneToMany(mappedBy="beRole")
+	@OneToMany(mappedBy="beRole" ,fetch=FetchType.LAZY)
 	@JsonBackReference("beUsers")
 	private List<BeUser> beUsers;
 	

@@ -36,7 +36,6 @@ import net.sf.json.JSONObject;
  * 会员信息管理 字段缺少过多 支付订单的查询需要更加完善 邀请码的查询和操作 积分管理的查询和手动增减
  * 规则设置在sysdict 按一种类型来查询
  * 会员管理
- * @author 吴俭
  *
  */
 @RestController
@@ -177,9 +176,9 @@ public class VipController {
 		JSONObject json = JSONObject.fromObject(u);
         User user = (User) JSONObject.toBean(json,User.class);
         int flag = bsUserinfoService.changeCredit(userId, type, credit, user.getUid());
-        if(flag<=0)
-        	return Result.fail("积分修改失败");
-		return Result.success();
+        if(flag>0)
+        	return Result.success();
+        return Result.fail("积分修改失败");
 	}
 	
 	@GetMapping("/userinfos/{vipNo}")

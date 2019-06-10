@@ -16,7 +16,6 @@ import java.util.List;
  */
 /**
  * 邀请码表
- * @author 吴俭
  *
  */
 @Entity
@@ -52,7 +51,7 @@ public class BsInvitecode implements Serializable {
 	
 	private byte status;
 
-	@OneToMany(mappedBy="bsInvitecode")
+	@OneToMany(mappedBy="bsInvitecode" ,fetch=FetchType.LAZY)
 	private List<BsIvtuserinfo> bsIvtuserinfos;
 	
 	@Transient

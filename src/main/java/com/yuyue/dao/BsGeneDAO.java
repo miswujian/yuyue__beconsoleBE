@@ -8,6 +8,6 @@ import com.yuyue.pojo.BsGene;
 
 public interface BsGeneDAO extends JpaRepository<BsGene, Integer>{
 
-	public Page<BsGene> findByName(String name, Pageable pageable);
+	public Page<BsGene> findByNameLike(String name, Pageable pageable);
 	
 }

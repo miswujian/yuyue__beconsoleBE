@@ -16,7 +16,6 @@ import java.util.List;
  */
 /**
  * 书籍专题信息表
- * @author 吴俭
  *
  */
 @Entity
@@ -54,7 +53,7 @@ public class BsBooksubject implements Serializable {
 
 	//bi-directional many-to-one association to RsBookinsubject
 	@JsonBackReference(value = "rsBookinsubjects")
-	@OneToMany(mappedBy="bsBooksubject")
+	@OneToMany(mappedBy="bsBooksubject" ,fetch=FetchType.LAZY)
 	private List<RsBookinsubject> rsBookinsubjects;
 
 	public BsBooksubject() {

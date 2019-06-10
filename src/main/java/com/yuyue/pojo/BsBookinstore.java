@@ -2,10 +2,13 @@ package com.yuyue.pojo;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import io.swagger.annotations.ApiModelProperty;
 
 
 /**
@@ -14,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 /**
  * 书籍库存信息表
- * @author 吴俭
  *
  */
 @Entity
@@ -37,21 +39,38 @@ public class BsBookinstore implements Serializable {
 	private String rfid;
 
 	private byte status;
+	
+	private String code;
 
 	//bi-directional many-to-one association to BsBookinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="bookinfo_id")
 	private BsBookinfo bsBookinfo;
 
 	//bi-directional many-to-one association to BsBookcellinfo
 	@ManyToOne
+	@ApiModelProperty(hidden = true) 
 	@JoinColumn(name="cell_id")
 	private BsBookcellinfo bsBookcellinfo;
 	
-	
 	@ManyToOne
-	@JoinColumn(name="warehouse_id")
-	private BeWarehouse beWarehouse;
+	@ApiModelProperty(hidden = true) 
+	@JoinColumn(name="location_id")
+	private BeLocation beLocation;
+	
+	@OneToMany(mappedBy="bsBookinstore")
+	@JsonBackReference("rsStoragerecorditems")
+	private List<RsStoragerecorditem> rsStoragerecorditems;
+	
+	@Transient
+	private String caseName;
+	
+	@Transient
+	private Integer cellId;
+	
+	@Transient
+	private String categoryName;
 
 	//bi-directional many-to-one association to RsCurborrowrecord
 	/*@OneToMany(mappedBy="bsBookinstore")
@@ -64,12 +83,52 @@ public class BsBookinstore implements Serializable {
 	public BsBookinstore() {
 	}
 
-	public BeWarehouse getBeWarehouse() {
-		return beWarehouse;
+	public List<RsStoragerecorditem> getRsStoragerecorditems() {
+		return rsStoragerecorditems;
 	}
 
-	public void setBeWarehouse(BeWarehouse beWarehouse) {
-		this.beWarehouse = beWarehouse;
+	public void setRsStoragerecorditems(List<RsStoragerecorditem> rsStoragerecorditems) {
+		this.rsStoragerecorditems = rsStoragerecorditems;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+	public String getCaseName() {
+		return caseName;
+	}
+
+	public void setCaseName(String caseName) {
+		this.caseName = caseName;
+	}
+
+	public Integer getCellId() {
+		return cellId;
+	}
+
+	public void setCellId(Integer cellId) {
+		this.cellId = cellId;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public BeLocation getBeLocation() {
+		return beLocation;
+	}
+
+	public void setBeLocation(BeLocation beLocation) {
+		this.beLocation = beLocation;
 	}
 
 	public BigInteger getBookId() {

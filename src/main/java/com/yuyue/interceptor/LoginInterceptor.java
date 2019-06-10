@@ -1,6 +1,9 @@
 package com.yuyue.interceptor;
 
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +27,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate = null;
 	
+	@SuppressWarnings("all")
 	@Override
 	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o)
 			throws Exception {
@@ -54,11 +58,20 @@ public class LoginInterceptor implements HandlerInterceptor {
         	return true;
         }
         String u = stringRedisTemplate.opsForValue().get(httpServletRequest.getSession().getId().toString());
+        /**
+         * 允许多跨域设置
+         */
+        String []  allowDomain= {"http://localhost:3006","http://119.3.231.11:5000"};
+		Set allowedOrigins= new HashSet(Arrays.asList(allowDomain));
+		String originHeader=((HttpServletRequest) httpServletRequest).getHeader("Origin");
         if(u==null) {
         	System.err.println("失败了失败了");
 			httpServletResponse.reset();
 			httpServletResponse.setCharacterEncoding("UTF-8");
 			httpServletResponse.setContentType("application/json;charset=UTF-8");
+			if(allowedOrigins.contains(originHeader))
+				httpServletResponse.setHeader("Access-Control-Allow-Origin", originHeader);
+			httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
 			PrintWriter pw = httpServletResponse.getWriter();
 		    JSONObject res = new JSONObject();
 		    res.put("codeguess",0);
@@ -75,12 +88,35 @@ public class LoginInterceptor implements HandlerInterceptor {
 			httpServletResponse.reset();
 			httpServletResponse.setCharacterEncoding("UTF-8");
 			httpServletResponse.setContentType("application/json;charset=UTF-8");
+			if(allowedOrigins.contains(originHeader))
+				httpServletResponse.setHeader("Access-Control-Allow-Origin", originHeader);
+			httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
 			PrintWriter pw = httpServletResponse.getWriter();
 		    JSONObject res = new JSONObject();
 		    res.put("codeguess",0);
 		    res.put("message","没登录被拦截了哟");
 			pw.append(res.toString());
 			return false;
+		}
+		System.err.println("user:"+user.getRoleType()+":"+StringUtils.startsWith(page, "system/users")+
+				":"+!"GET".equals(httpServletRequest.getMethod().toUpperCase())+":"+
+				(user.getRoleType()!=8)+":"+(user.getRoleType()!=10));
+		if(StringUtils.startsWith(page, "system/users")&&!"GET".equals(httpServletRequest.getMethod().toUpperCase())) {
+			if(user.getRoleType()!=8&&user.getRoleType()!=10) {
+				httpServletResponse.reset();
+				httpServletResponse.setCharacterEncoding("UTF-8");
+				httpServletResponse.setContentType("application/json;charset=UTF-8");
+				//这两个必须加 不然false会报跨域错误
+				if(allowedOrigins.contains(originHeader))
+					httpServletResponse.setHeader("Access-Control-Allow-Origin", originHeader);
+				httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+				PrintWriter pw = httpServletResponse.getWriter();
+			    JSONObject res = new JSONObject();
+			    res.put("codeguess",0);
+			    res.put("message","权限不足");
+				pw.append(res.toString());
+				return false;
+			}
 		}
 		return true;
 	}

@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +18,6 @@ import java.util.List;
  */
 /**
  * 鱼群动态表
- * @author 吴俭
  *
  */
 @Entity
@@ -44,6 +45,7 @@ public class BsUserdynamic implements Serializable {
 	//bi-directional many-to-one association to BsBookinfo
 	@ManyToOne
 	@JsonBackReference(value = "bsBookinfo")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="bookinfo_id")
 	private BsBookinfo bsBookinfo;
 	
@@ -53,24 +55,27 @@ public class BsUserdynamic implements Serializable {
 	//bi-directional many-to-one association to BsBooksubject
 	@ManyToOne
 	@JsonBackReference(value = "bsBooksubject")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="subject_id")
 	private BsBooksubject bsBooksubject;
 
 	//bi-directional many-to-one association to BsUserdynamic
 	@ManyToOne
 	@JsonBackReference(value = "bsUserdynamic")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="parent_id")
 	private BsUserdynamic bsUserdynamic;
 
 	//bi-directional many-to-one association to BsUserdynamic
 	//级联删除
-	@OneToMany(cascade = {CascadeType.ALL},mappedBy="bsUserdynamic")
+	@OneToMany(cascade = {CascadeType.ALL},mappedBy="bsUserdynamic",fetch=FetchType.LAZY)
 	@JsonBackReference(value = "bsUserdynamics")
 	private List<BsUserdynamic> bsUserdynamics;
 
 	//bi-directional many-to-one association to BsUserinfo
 	@ManyToOne
 	@JsonBackReference(value = "bsUserinfo")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="user_id")
 	private BsUserinfo bsUserinfo;
 	
@@ -78,12 +83,12 @@ public class BsUserdynamic implements Serializable {
 	private String userName;
 
 	//bi-directional many-to-one association to BsUserdynamiccmnt
-	@OneToMany(cascade = {CascadeType.ALL},mappedBy="bsUserdynamic")
+	@OneToMany(cascade = {CascadeType.ALL},mappedBy="bsUserdynamic" ,fetch=FetchType.LAZY)
 	@JsonBackReference(value = "bsUserdynamiccmnts")
 	private List<BsUserdynamiccmnt> bsUserdynamiccmnts;
 
 	//bi-directional many-to-one association to RsUserdynamiclike
-	@OneToMany(cascade = {CascadeType.ALL},mappedBy="bsUserdynamic")
+	@OneToMany(cascade = {CascadeType.ALL},mappedBy="bsUserdynamic" ,fetch=FetchType.LAZY)
 	@JsonBackReference(value = "rsUserdynamiclikes")
 	private List<RsUserdynamiclike> rsUserdynamiclikes;
 

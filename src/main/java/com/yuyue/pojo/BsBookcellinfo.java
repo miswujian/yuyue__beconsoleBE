@@ -1,9 +1,14 @@
 package com.yuyue.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import io.swagger.annotations.ApiModelProperty;
 
 
 /**
@@ -12,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 /**
  * 书柜格子表
- * @author 吴俭
  *
  */
 @Entity
@@ -48,10 +52,56 @@ public class BsBookcellinfo implements Serializable {
 
 	//bi-directional many-to-one association to BsBookcaseinfo
 	@ManyToOne
+	@JsonBackReference("bsBookcaseinfo")
+	@ApiModelProperty(hidden = true)
 	@JoinColumn(name="case_id")
 	private BsBookcaseinfo bsBookcaseinfo;
+	
+	@Transient
+	private String orderNo;
 
+	@Transient
+	private String bookName;
+	
+	@Transient
+	private String bookId;
+	
+	@Transient
+	private Date createTime;
+	
 	public BsBookcellinfo() {
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public String getBookName() {
+		return bookName;
+	}
+
+	public void setBookName(String bookName) {
+		this.bookName = bookName;
+	}
+
+	public String getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(String bookId) {
+		this.bookId = bookId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public Integer getCellId() {
